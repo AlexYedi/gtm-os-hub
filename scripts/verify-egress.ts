@@ -1,6 +1,6 @@
 // Local egress verification — exercises the REAL GitHub → projection → guard path
 // against the live (private) repo. NOT part of the build; run manually:
-//   cd apps/dashboard && bun run scripts/verify-egress.ts
+//   bun run scripts/verify-egress.ts
 //
 // Proves the PII contract on real data: raw GitHub data (contains author emails)
 // FAILS the scan; the public projection that actually ships PASSES it.

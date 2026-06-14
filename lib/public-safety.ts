@@ -14,13 +14,17 @@ const EMAIL = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi
 const PHONE = /(?:\+?\d{1,3}[\s.-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\b/g
 const LINKEDIN = /(?:https?:\/\/)?(?:[\w.]+\.)?linkedin\.com\/[^\s")]+/gi
 
-// Denylist of confidential entities that must never reach a public surface.
-// Employer + (as the funnel grows) target-account / prospect names. Keep this
-// list out of any public payload by construction; it is scanned for, not shown.
-const DENYLIST: readonly string[] = [
-  'GKY', // current employer
-  // add target-account / prospect / hiring-manager names here as Stage 4 fills
-]
+// Denylist of confidential entities (employer, target accounts, prospect /
+// hiring-manager names) that must never reach a public surface. Sourced from env
+// so the actual names live in PRIVATE config (Vercel env / local .env) and never
+// in this public source tree. Read at call time so config changes need no rebuild.
+//   PII_DENYLIST="acme corp,jane doe,target inc"
+function denylist(): string[] {
+  return (process.env.PII_DENYLIST ?? '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean)
+}
 
 export interface PiiScanResult {
   clean: boolean
@@ -38,7 +42,7 @@ export function scanForPii(input: string): PiiScanResult {
     const m = input.match(re)
     if (m) hits.push(...m)
   }
-  for (const term of DENYLIST) {
+  for (const term of denylist()) {
     if (term && new RegExp(`\\b${escapeRegExp(term)}\\b`, 'i').test(input)) {
       hits.push(term)
     }

@@ -9,8 +9,11 @@ test('flags linkedin urls', () => {
   expect(scanForPii('see https://linkedin.com/in/alexyedi').clean).toBe(false)
 })
 
-test('flags denylisted employer (case-insensitive)', () => {
-  expect(scanForPii('synced with gky today').clean).toBe(false)
+test('flags denylisted entities from PII_DENYLIST (case-insensitive)', () => {
+  process.env.PII_DENYLIST = 'acme-corp'
+  expect(scanForPii('synced with Acme-Corp today').clean).toBe(false)
+  expect(scanForPii('synced with someone today').clean).toBe(true)
+  delete process.env.PII_DENYLIST
 })
 
 test('passes clean commit subjects', () => {

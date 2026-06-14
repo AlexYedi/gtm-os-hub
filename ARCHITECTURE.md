@@ -1,13 +1,11 @@
-# apps/dashboard — The Hub
+# The Hub
 
-One Next.js app. Two audiences. Three depths. The gtm-os **Hub**: a live, projection-based
-surface that replaces the planned Framer brochure (`Phase_1/architecture.md` §9) and the
-internal R2 measurement dashboard (§8) with a single artifact that is useful from day one
-and compounds into the portfolio.
+One Next.js app. Two audiences. Three depths. A live, projection-based surface — a management
+**cockpit** plus a public **dashboard-as-portfolio** — useful from day one and compounding into
+the portfolio. Standalone repo; reads its data sources (a separate private workspace) over
+external APIs and never vendors private state.
 
-**Status:** V0 scaffold (W3, 2026-06-11). The Work, Live page renders from GitHub.
-**Lineage:** supersedes `Phase_1/architecture.md` §8 + §9; pulls forward `THE_PLAN.md` W9/W16.
-**Tracking:** Linear (issues) · ChatPRD (PRD). See §8.
+**Status:** V0 (2026-06). The Work, Live page renders from GitHub.
 
 ---
 
@@ -21,13 +19,13 @@ are the single most likely Phase 1 mistake. The control is **default-deny, defen
 | Source | Leak vector |
 |---|---|
 | GitHub | Commit **author email** (in every commit), names/secrets in messages or diffs |
-| Linear | Named hiring managers, target companies, deal data, **GKY-employer-confidential** matter |
+| Linear | Named contacts, target companies, deal data, **employer-confidential** matter |
 | Notion | Embedded prospect/customer PII inside artifacts |
 | Supabase | People/Companies rows — emails, LinkedIn URLs |
 
-> Note the second axis beyond GDPR PII: **employer confidentiality.** The job-hunt funnel
-> (Stage 4 prospecting, intent-to-move) must never reach a public surface. The publish gate
-> (layer 2) handles this — that content simply never gets marked public.
+> Note the second axis beyond GDPR PII: **employer / outreach confidentiality.** Sensitive CRM
+> and outreach data must never reach a public surface. The publish gate (layer 2) handles this —
+> that content simply never gets marked public.
 
 ### Three layers
 
@@ -67,8 +65,8 @@ A toggle on the public site flips Tier 1 ↔ Tier 2. Same data, three depths.
 ## 2. Stack
 Next.js App Router (15.5 → **16 + Cache Components is a tracked upgrade**) · TypeScript ·
 Vercel · Tailwind v4 (CSS-first `@theme`) · shadcn/ui (cockpit build-out) · recharts (charts) ·
-Framer **Motion** (animation library — note: we killed Framer-the-builder, kept Framer-Motion).
-Package manager: bun (monorepo convention). Lives at `apps/dashboard` in the existing Turborepo.
+Framer **Motion** (animation library — Framer-Motion, not Framer-the-builder).
+Package manager: bun. Standalone repo deployed to Vercel.
 
 ---
 
@@ -81,7 +79,7 @@ Linear  (GraphQL) → what's next · in-progress · blockers · logged ideas (la
 GitHub  (REST)    → shipped: commits · PRs · releases   → "The Work, Live"
 Notion  (API)     → produced artifacts: writeups · briefs · drafts
 Supabase          → metrics · evals · signals · funnel  (lights up W3→W7→W9)
-repo / THE_PLAN.md → structural skeleton: domains · milestones · funnel
+roadmap doc → structural skeleton: domains · milestones · funnel
 ```
 
 This also fixes the plan-tracker's flaw: it stored status in IndexedDB, duplicating Linear.
@@ -128,10 +126,7 @@ Empty panels render as `⊘ instrumenting — wired, awaiting first run`. Never 
 
 ---
 
-## 8. Reconciliation & tracking
-- `CLAUDE.md` — locked decision updated: Hub = unified live Next.js dashboard; supersedes Framer.
-- `docs/THE_PLAN.md` — W16 Framer line + "NOT doing: Framer" updated; Hub pulled to W3 as a rolling artifact reaching R2-completeness by W9.
-- `Phase_1/architecture.md` §8 + §9 — marked unified (this app).
-- `apps/plan-tracker` — legacy once the cockpit ships.
-- **Linear** — issues under "Full-Stack GTM Roadmap (24-week half)" (V0/V1/V2). Single source of truth for open work.
-- **ChatPRD** — product requirements doc; the product-intent artifact. Linked from the Linear epic.
+## 8. Tracking
+- **Linear** — issues (V0 / V1 / V2) in the project *gtm-OS Hub — Dashboard-as-Portfolio*. Single source of truth for open work.
+- **ChatPRD** — the product-requirements / product-intent doc.
+- **Data sources** live in a separate private workspace; this repo reads them over external APIs only and never vendors private state into its own tree.
