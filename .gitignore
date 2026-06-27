@@ -10,3 +10,6 @@ next-env.d.ts
 .DS_Store
 # Source/reference materials (kept locally, not vendored into the repo)
 GTM University/
+
+# macOS text clippings (may contain pasted secrets)
+*.textClipping
