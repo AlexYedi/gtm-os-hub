@@ -6,3 +6,10 @@ next-env.d.ts
 .env
 .env*.local
 .vercel
+.env*.txt
+.DS_Store
+# Source/reference materials (kept locally, not vendored into the repo)
+GTM University/
+
+# macOS text clippings (may contain pasted secrets)
+*.textClipping

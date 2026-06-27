@@ -1,7 +1,8 @@
 name: ci
 
 # The PII egress guard is enforced, not aspirational: the safety tests must pass
-# before any change merges or lands on main.
+# before any change merges or lands on main. Covers both the GitHub adapter
+# (public-safety) and the learning/university adapter (lib/sources/learning).
 on:
   pull_request:
   push:
@@ -16,6 +17,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.13
-      # Dependency-light: public-safety has no imports, so no install needed.
+      - name: Install deps (learning adapter imports @supabase/supabase-js)
+        run: bun install --frozen-lockfile
       - name: Run PII egress guard tests
-        run: bun test lib/public-safety.test.ts
+        run: bun test lib/
