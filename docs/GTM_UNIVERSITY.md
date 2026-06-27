@@ -7,7 +7,7 @@ remaining effort from real velocity. It doubles as a public portfolio artifact �
 
 - **PRD:** ChatPRD — "GTM University — PRD (v1)"
 - **Tracking:** Linear YED-98 (+ YED-99/100/101) · project *gtm-OS Hub — Dashboard-as-Portfolio*
-- **Data plane:** Supabase `gtm-os-project` → `learning` schema (first real tables on the spine)
+- **Data plane:** Supabase `GTM_OS_HUB` (ref `nnywrmetdoixdbevvsvf`) → `learning` schema. (Note: the original `gtm-os-project` spine was deleted during a Supabase reorg on 2026-06-27; the schema was rebuilt verbatim from these migrations into `GTM_OS_HUB`.)
 
 ## Two planes (and why the Hub still owns "zero state")
 

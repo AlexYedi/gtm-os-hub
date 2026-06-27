@@ -1,5 +1,5 @@
 -- learning_00_init — GTM University data plane (first tables on the gtm-os spine).
--- Applied to gtm-os-project (reockeomhqmmjvanfopj) via Supabase MCP. Kept here for version control.
+-- Applied to GTM_OS_HUB (nnywrmetdoixdbevvsvf) via Supabase MCP. Kept here for version control.
 -- Conventions follow gtm-os/Phase_1/architecture.md: ordered UUIDv7, idempotency, RLS, v_public_* projections.
 
 create schema if not exists learning;
