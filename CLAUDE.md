@@ -34,8 +34,15 @@ Full design lives in **`ARCHITECTURE.md` — start with §0, the PII contract.**
 
 ### Stack
 Next.js App Router (15.5; Next 16 + Cache Components is a tracked upgrade) · TypeScript ·
-Tailwind v4 (CSS-first `@theme`) · bun · Vercel. `lib/sources/*` are the source adapters — each
-returns PII-safe `Public*` types. recharts for charts; Framer **Motion** for animation.
+Tailwind v4 (CSS-first `@theme`) · `@supabase/supabase-js` · `posthog-js` (public-page pageview
+analytics — see below) · bun · Vercel. `lib/sources/*` are the source adapters — each returns
+PII-safe `Public*` types. **Not yet installed (planned):** recharts (charts), Framer Motion
+(animation), shadcn/ui (cockpit) — add when the build needs them.
+
+**Analytics (PostHog):** `instrumentation-client.ts` (Next auto-loads it). **PII-safe by design and
+env-gated** — dormant unless `NEXT_PUBLIC_POSTHOG_KEY` is set. Pageviews only; **autocapture OFF,
+session recording OFF**; the private `/cockpit/*` surface is excluded via `before_send`. Project:
+`gtm_os_hub` (PostHog US cloud). Key is a *publishable* project key (client-safe by design).
 
 ### Commands
 - `bun install` · `bun dev` → http://localhost:3000
@@ -45,8 +52,9 @@ returns PII-safe `Public*` types. recharts for charts; Framer **Motion** for ani
 
 ### Env (see `.env.example`)
 `GITHUB_TOKEN` (fine-grained, read-only Contents) · `GTM_OS_REPO` · `PII_DENYLIST` (confidential
-terms — private) · `LINEAR_API_KEY` (V1) · `COCKPIT_PASSWORD` (V1). Secrets in `.env` (gitignored)
-/ Vercel env only — never committed.
+terms — private) · `LINEAR_API_KEY` (V1) · `COCKPIT_PASSWORD` (V1) · `NEXT_PUBLIC_POSTHOG_KEY` +
+`NEXT_PUBLIC_POSTHOG_HOST` (publishable analytics key; dormant if unset). Secrets in `.env`
+(gitignored) / Vercel env only — never committed.
 
 ### Tracking (single sources of truth)
 - **Linear** project *gtm-OS Hub — Dashboard-as-Portfolio* — open work (V0 / V1 / V2).
