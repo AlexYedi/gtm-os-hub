@@ -51,7 +51,7 @@ export default async function CockpitUniversity() {
         <div className="mb-8 rounded-lg border border-pending bg-paper p-4 text-sm">
           <p className="font-semibold text-ink">One step to go live</p>
           <p className="mt-1 text-ink-muted">
-            Add <code className="font-mono text-xs">SUPABASE_SERVICE_ROLE_KEY</code> (Supabase → gtm-os-project →
+            Add <code className="font-mono text-xs">SUPABASE_SERVICE_ROLE_KEY</code> (Supabase → GTM_OS_HUB →
             Settings → API → service_role) and a <code className="font-mono text-xs">COCKPIT_PASSWORD</code> to{' '}
             <code className="font-mono text-xs">.env.local</code>, then restart. The timer + submissions write
             through this key.
