@@ -28,7 +28,7 @@ export function WorkStream({ commits }: { commits: PublicCommit[] }) {
             rel="noopener noreferrer"
             className="mt-1 block text-[0.95rem] leading-snug text-ink hover:text-accent-dark"
           >
-            {c.subject}
+            {c.kind}
           </a>
         </li>
       ))}
