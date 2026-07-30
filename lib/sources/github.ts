@@ -1,14 +1,15 @@
-import { assertPublicSafe, scrub } from '../public-safety'
+import { assertPublicSafe } from '../public-safety'
 
 /**
  * PUBLIC commit shape. Note what is ABSENT: no author email, no committer,
- * no message body. This is the allowlist projection — the type itself is the
- * primary PII control. The raw GitHub type below deliberately never declares
- * `author.email`, so it cannot be read, let alone rendered.
+ * no message body, and no free-text subject. This is the allowlist projection
+ * — the type itself is the primary PII control. `kind` is drawn from a fixed
+ * vocabulary (KIND_LABELS), never from message content, so confidential prose
+ * in a commit message is structurally incapable of reaching the public page.
  */
 export interface PublicCommit {
   sha: string // short
-  subject: string // first line only, scrubbed
+  kind: string // safe category from the conventional-commit type — NOT free text
   date: string // ISO
   url: string // public commit permalink
 }
@@ -21,9 +22,29 @@ interface RawCommit {
 
 const REPO = process.env.GTM_OS_REPO ?? 'AlexYedi/gtm-os'
 
+/**
+ * Fixed public vocabulary. The commit message is parsed ONLY to look up a key
+ * here; anything not matched (including all free-text prose) collapses to
+ * 'Update'. Message content therefore never passes through as output.
+ */
+const KIND_LABELS: Record<string, string> = {
+  feat: 'Feature',
+  fix: 'Fix',
+  docs: 'Docs',
+  refactor: 'Refactor',
+  perf: 'Performance',
+  test: 'Tests',
+  build: 'Build',
+  ci: 'CI',
+  chore: 'Chore',
+  style: 'Style',
+}
+
 function toPublic(c: RawCommit): PublicCommit {
-  const subject = scrub((c.commit.message.split('\n')[0] ?? '').trim())
-  return { sha: c.sha.slice(0, 7), subject, date: c.commit.author.date, url: c.html_url }
+  const first = (c.commit.message.split('\n')[0] ?? '').trim()
+  const m = /^(\w+)(?:\([^)]*\))?!?:/.exec(first)
+  const kind = (m && KIND_LABELS[m[1].toLowerCase()]) || 'Update'
+  return { sha: c.sha.slice(0, 7), kind, date: c.commit.author.date, url: c.html_url }
 }
 
 /**
@@ -57,25 +78,25 @@ export async function getPublicCommits(limit = 20): Promise<PublicCommit[]> {
 const FIXTURE_COMMITS: PublicCommit[] = [
   {
     sha: '4143fac',
-    subject: 'hygiene learnings and event intelligence write up',
+    kind: 'Docs',
     date: '2026-06-10T00:00:00Z',
     url: `https://github.com/${REPO}/commit/4143fac`,
   },
   {
     sha: '5d32e68',
-    subject: 'hubspot connection fix',
+    kind: 'Fix',
     date: '2026-06-09T00:00:00Z',
     url: `https://github.com/${REPO}/commit/5d32e68`,
   },
   {
     sha: 'b2e9cd3',
-    subject: 'Add apps/plan-tracker — interactive HTML front-end for the 24-week plan',
+    kind: 'Feature',
     date: '2026-05-21T00:00:00Z',
     url: `https://github.com/${REPO}/commit/b2e9cd3`,
   },
   {
     sha: 'a7b82f6',
-    subject: 'Add THE_PLAN.md — 24-week Forward Deployed GTME plan',
+    kind: 'Feature',
     date: '2026-05-20T00:00:00Z',
     url: `https://github.com/${REPO}/commit/a7b82f6`,
   },
