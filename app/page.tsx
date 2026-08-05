@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { WorkStream } from '@/components/WorkStream'
 import { getPublicCommits } from '@/lib/sources/github'
 
@@ -17,14 +18,17 @@ export default async function Home() {
         </p>
       </header>
 
-      {/* Tier toggle — The Work, Live (active) / Living System Map (V1) */}
+      {/* Tier toggle — The Work, Live (active) ↔ Living System Map (live) */}
       <nav className="mb-10 flex gap-1 rounded-lg border border-edge bg-paper p-1 text-sm">
         <span className="rounded-md bg-surface px-3 py-1.5 font-medium text-ink shadow-sm">
           The Work, Live
         </span>
-        <span className="cursor-not-allowed px-3 py-1.5 text-ink-soft" title="Coming in V1">
-          Living System Map ⊘
-        </span>
+        <Link href="/system" className="rounded-md px-3 py-1.5 text-ink-soft hover:text-ink">
+          Living System Map
+        </Link>
+        <Link href="/university" className="rounded-md px-3 py-1.5 text-ink-soft hover:text-ink">
+          GTM University
+        </Link>
       </nav>
 
       <section>
