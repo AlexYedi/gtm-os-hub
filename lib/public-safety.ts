@@ -5,7 +5,7 @@
 // projection (type-level omission of PII) is the primary control; everything below
 // is belt-and-suspenders that fails loudly if PII ever reaches a public payload.
 //
-// See apps/dashboard/ARCHITECTURE.md §0 for the full contract.
+// See ARCHITECTURE.md §0 for the full contract.
 
 // --- PII patterns ---------------------------------------------------------
 const EMAIL = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi
