@@ -128,3 +128,33 @@ Empty panels render as `⊘ instrumenting — wired, awaiting first run`. Never 
 - **Linear** — issues (V0 / V1 / V2) in the project *gtm-OS Hub — Dashboard-as-Portfolio*. Single source of truth for open work.
 - **ChatPRD** — the product-requirements / product-intent doc.
 - **Data sources** live in a separate private workspace; this repo reads them over external APIs only and never vendors private state into its own tree.
+
+---
+
+## 9. Relationship to gtm-os — the R2 dashboard decision (resolved 2026-08-06)
+
+**The R2 measurement dashboard IS the Hub.** There is no separate `gtm-os/apps/dashboard` — it
+was never built, and the R2 role was absorbed here when the Hub became its own repo (extraction
+2026-06-13). The gtm-os roadmap says the Hub "reaches R2-dashboard completeness"; this section
+makes that authoritative from the Hub side. (Stale `apps/dashboard` pointers remain in
+`gtm-os/Phase_1/architecture.md:377,404` — drift for that thread to clean up.)
+
+The R2 surface splits on PII, along the boundary the Hub already has:
+
+| Half | Renders | Surface | Read path |
+|---|---|---|---|
+| **Public** | topic movement · intersections · bridge people | Tiers 1–2 (public) | anon key + `signal_read.*` views (PII-safe by construction) |
+| **Private** | conflict-log review · eval runs · funnel · the "V1 assumptions" tripwire strip | Cockpit (Tier 3) | service-role, server-side, auth-gated |
+
+- **Coupling = the `signal_read` view contract** (gtm-os architecture §6 / D0) — the database-native
+  equivalent of an API; the Hub reads `signal_read.*`, never writes `signal.*`, shares no code.
+- **Public views must be anon-grantable** (mirror `learning.*`'s `v_public_*` pattern) — the public
+  egress contract can't ride a service-role key. This reconciles the internal contradiction in gtm-os
+  architecture.md (line 402 "dashboard uses anon key + RLS" vs line 404 "service-role server-side"):
+  **anon for the public half, service-role only in the cockpit.**
+- **Every public `signal_read` payload still ends with `assertPublicSafe`** (§0). The spine node and
+  topic panels sit behind the same egress gate as GitHub / Linear / University. Bridge people reach a
+  public surface only via the allow-listed `PublicBridgePerson` projection (name + public title +
+  themes; never email/linkedin/phone) plus the suppression gate.
+- **Red-flag #4 gate** ("no sixth content skill before the R2 dashboard exists") is satisfied when the
+  Hub renders the `signal_read` topic views — i.e. **Hub Slice-1 rendering IS the R2 gate.**
