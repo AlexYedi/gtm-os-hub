@@ -4,6 +4,7 @@ import { NODES, type SystemNode } from '../../content/system-map'
 import { getPublicCommits, type PublicCommit } from './github'
 import { getPublicRoadmap, type PublicRoadmapSummary } from './linear'
 import { getPublicSpineStats, type PublicSpineStats } from './spine'
+import { getPublicTopicIntelligence } from './topic-intelligence'
 import { getPublicUniversity } from './learning'
 import { toProgressMap, computeInsights } from '../university-view'
 
@@ -36,6 +37,7 @@ export interface StatusParts {
   linearConfigured: boolean
   university: { pctProgress: number; publicSubmissions: number; subtasksTotal: number } | null
   spine: PublicSpineStats
+  topic: { themes: number; intersections: number } | null
   deploy: { env: string | null; sha: string | null }
 }
 
@@ -68,8 +70,13 @@ export function buildStatusMap(p: StatusParts): StatusMap {
       ? liveState(`${p.university.publicSubmissions} shared · ${p.university.subtasksTotal} units`)
       : INSTRUMENTING_STATE,
 
-    // V1: no Hub read path → signalCount is null → instrumenting. Lights up unchanged later.
-    spine: p.spine.signalCount != null ? liveState(`${p.spine.signalCount} signals`) : INSTRUMENTING_STATE,
+    // Topic intelligence is the richest live read from the spine — prefer it. Falls back to raw
+    // signal counts, then instrumenting. All derived, never hardcoded; empty → instrumenting.
+    spine: p.topic
+      ? liveState(`${p.topic.themes} themes · ${p.topic.intersections} pairs`)
+      : p.spine.signalCount != null
+        ? liveState(`${p.spine.signalCount} signals`)
+        : INSTRUMENTING_STATE,
 
     // Live by construction (you are looking at it). No fabricated uptime — just where it runs.
     hub: liveState(
@@ -94,12 +101,19 @@ export function buildStatusMap(p: StatusParts): StatusMap {
  * returns nothing simply renders instrumenting.
  */
 export async function getSystemStatus(): Promise<SystemStatus> {
-  const [commits, roadmap, spine, uni] = await Promise.all([
+  const [commits, roadmap, spine, topicIntel, uni] = await Promise.all([
     getPublicCommits(1).catch(() => [] as PublicCommit[]),
     getPublicRoadmap(),
     getPublicSpineStats(),
+    getPublicTopicIntelligence(),
     getPublicUniversity(),
   ])
+
+  // Live only when real rows came back; a keyed-but-empty read stays honest (instrumenting).
+  const topic =
+    topicIntel.movement.length > 0 || topicIntel.intersections.length > 0
+      ? { themes: topicIntel.movement.length, intersections: topicIntel.intersections.length }
+      : null
 
   const university =
     uni.progress.length > 0
@@ -119,6 +133,7 @@ export async function getSystemStatus(): Promise<SystemStatus> {
     linearConfigured: Boolean(process.env.LINEAR_API_KEY),
     university,
     spine,
+    topic,
     deploy: {
       env: process.env.VERCEL_ENV ?? null,
       sha: process.env.VERCEL_GIT_COMMIT_SHA ?? null,

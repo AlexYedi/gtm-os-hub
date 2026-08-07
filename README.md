@@ -29,11 +29,21 @@ bun run scripts/verify-egress.ts   # needs GITHUB_TOKEN in .env
 
 ## Layout
 ```
-app/                 # routes — / (The Work, Live)
+app/                 # routes — / (The Work, Live) · /system · /signal · /university · /cockpit (gated)
 components/           # presentational
+content/              # content-as-code (system-map topology, curriculum)
+docs/                 # build specs + build journal (the "arc")
 lib/public-safety.ts # the PII egress guard (the first module, with CI gate)
 lib/sources/         # source adapters — each returns PII-safe Public* types
 ```
 
 ## Status
-V0 (2026-06). The Work, Live renders from GitHub. Next: Linear wiring + Cockpit (V1).
+- **V0** — The Work, Live (GitHub). ✅ shipped.
+- **V1** — Living System Map, counts-only Linear roadmap, GTM University, cockpit board. ✅ shipped.
+- **Signal** (`/signal`) — topic-intelligence render over the signal-spine `signal_read` views
+  (counts only, PII-safe). ✅ built; renders honest-empty until the spine read path is opened
+  (exposed-schemas toggle + `SPINE_SUPABASE_*` env). See `docs/SLICE_1B_SIGNAL_RENDER_SPEC.md`.
+- **Next** — Notion artifacts adapter; then eval/funnel panels light up (V2).
+
+Every surface is a projection — no fabricated numbers; empty panels render
+`⊘ instrumenting — wired, awaiting first run`.

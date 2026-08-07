@@ -15,6 +15,7 @@ const EMPTY_PARTS: StatusParts = {
   linearConfigured: false,
   university: null,
   spine: EMPTY_SPINE,
+  topic: null,
   deploy: { env: null, sha: null },
 }
 
@@ -50,6 +51,16 @@ test('live parts derive real metrics, never hardcoded', () => {
   expect(m.linear.metric).toContain('3 in flight')
   expect(m.spine.status).toBe('live')
   expect(m.spine.metric).toContain('59')
+})
+
+test('topic intelligence takes precedence over raw spine counts on the spine node', () => {
+  const m = buildStatusMap({
+    ...EMPTY_PARTS,
+    spine: { entityCount: 396, eventCount: 452, signalCount: 59, lastSignalAt: null },
+    topic: { themes: 30, intersections: 124 },
+  })
+  expect(m.spine.status).toBe('live')
+  expect(m.spine.metric).toBe('30 themes · 124 pairs')
 })
 
 test('a clean assembled payload passes assertPublicSafe', () => {

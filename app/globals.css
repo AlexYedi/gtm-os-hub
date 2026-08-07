@@ -1,20 +1,28 @@
 @import "tailwindcss";
 
-/* Warm-editorial design language — extended from apps/plan-tracker.
-   Clay accent (#C44B23) is intentional: on-brand for a Clay-tier candidate. */
+/* Orchid — sampled from Design Inspo (a surreal botanical jungle). Dark-first: emerald ground +
+   parchment ink, warmed with amber + coral. Token NAMES are kept from the prior warm-editorial
+   scheme so component classes need NO changes — only the VALUES flip (light → dark). Elevation now
+   goes LIGHTER with height: --color-cream (ground, darkest) < --color-paper < --color-surface
+   (raised card). Contrast-checked ≥ AA on the emerald ground. */
 @theme {
-  --color-cream: #faf7f2;
-  --color-paper: #f5efe6;
-  --color-surface: #ffffff;
-  --color-ink: #2d1f0f;
-  --color-ink-muted: #6b5b47;
-  --color-ink-soft: #9a8970;
-  --color-edge: #e8dfd0;
-  --color-accent: #c44b23;
-  --color-accent-dark: #8e2d11;
-  --color-done: #4a6b3a;
-  --color-progress: #3d6e8c;
-  --color-pending: #b89968;
+  --color-cream: #143029;      /* page ground — deep emerald (darkest) */
+  --color-paper: #1c3e34;      /* recessed container — nav, notices */
+  --color-surface: #26493d;    /* raised card / active surface — clearly lighter, panels separate */
+  --color-ink: #f5efe0;        /* primary text — bright parchment */
+  --color-ink-muted: #bcc4b6;  /* secondary text */
+  --color-ink-soft: #9aa79c;   /* tertiary labels / hints */
+  --color-edge: #315448;       /* hairline borders — lifted so they read on the ground */
+  --color-accent: #ee6a6a;     /* brand accent — coral-rose (links, CTAs) */
+  --color-accent-dark: #d64f4f;
+  --color-done: #7ccb8e;       /* status: live — spring green */
+  --color-progress: #5aa9ce;   /* status: in-progress — sky */
+  --color-pending: #f0972f;    /* status: instrumenting — amber gold */
+
+  /* data-role tokens for the /signal topic-intelligence surface */
+  --color-signal: #ea5b95;     /* heat / momentum — dahlia magenta (reserved for data) */
+  --color-bridge: #43c2c6;     /* connectors / people — parrot teal */
+  --color-newpair: #f0972f;    /* a newly-formed intersection pair — amber gold */
 
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-serif: var(--font-lora), Georgia, serif;

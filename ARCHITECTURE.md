@@ -56,9 +56,14 @@ A visitor descends only as far as their interest takes them.
 |---|---|---|---|---|
 | 1 | **The Work, Live** (leads) | `/` | Recruiter / hiring manager / anyone | public |
 | 2 | **Living System Map** (drill-in) | `/system` | Technical interviewer / curious engineer | public |
+| 2 | **Signal** (topic intelligence) | `/signal` | Technical interviewer / curious engineer | public |
+| 2 | **GTM University** (learning) | `/university` | Recruiter / interviewer | public |
 | 3 | **The Cockpit** (operate) | `/cockpit` | Alex daily; shown selectively in interviews | gated |
 
-A toggle on the public site flips Tier 1 ↔ Tier 2. Same data, three depths.
+A tier nav on the public site moves between the Tier-1/2 surfaces. Same data, progressive depth.
+`/signal` and `/university` are **Tier-2 sibling surfaces** — dedicated homes for datasets too rich
+to inline on The Work, Live. (`/signal` records a deliberate divergence from §9's original "render on
+The Work, Live" intent — see §9.)
 
 ---
 
@@ -158,3 +163,19 @@ The R2 surface splits on PII, along the boundary the Hub already has:
   themes; never email/linkedin/phone) plus the suppression gate.
 - **Red-flag #4 gate** ("no sixth content skill before the R2 dashboard exists") is satisfied when the
   Hub renders the `signal_read` topic views — i.e. **Hub Slice-1 rendering IS the R2 gate.**
+
+### 9.1 Render status (Slice 1 Section B / YED-122 — updated 2026-08-07)
+
+Build spec: `docs/SLICE_1B_SIGNAL_RENDER_SPEC.md`. Adapter `lib/sources/topic-intelligence.ts`
+(counts-only, `assertPublicSafe` on every path), surface `app/signal/page.tsx`.
+
+- **Surface:** the topic views render on a **dedicated `/signal` Tier-2 surface** (§1), *not* inlined
+  on The Work, Live as this section originally implied — a 30-theme / 124-pair dataset warrants its
+  own home. Linked from `/` and `/system` (spine node deep-links to it). Deliberate divergence.
+- **Live today:** movement (30 themes, tiered 10/10/10 disclosure) + intersections (ranked, with
+  bridge **counts**). Honest-empty (`INSTRUMENTING`) until the spine's exposed-schemas toggle
+  (`signal_read`) + `SPINE_SUPABASE_*` env land — no fabricated numbers cross the gate.
+- **Deferred, so red-flag #4 is only PARTIALLY cleared:** the `topic_intelligence_health` tripwire
+  strip (YED-122 scope) — its view is in schema `signal`, not `signal_read`, so it needs a gtm-os
+  `signal_read` wrapper or cockpit-only rendering; and **public bridge people** (`PublicBridgePerson`)
+  which stay gated until `signal.suppression` day-1 rows are seeded. Counts-only until then.

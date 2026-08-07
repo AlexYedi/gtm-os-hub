@@ -19,6 +19,7 @@ export interface SystemNode {
   source: string // short provenance label
   x: number // % 0–100 (authored)
   y: number // % 0–100 (authored)
+  href?: string // optional deep-link to the surface this node drives (rendered in NodeDetail)
 }
 
 export interface SystemEdge {
@@ -59,10 +60,11 @@ export const NODES: SystemNode[] = [
     id: 'spine',
     label: 'Signal Spine',
     kind: 'source',
-    blurb: 'Separate signal-pipeline Supabase project. The Hub has no read path to it yet — wired-but-empty until the cross-repo public view and key land.',
+    blurb: 'Separate signal-pipeline Supabase project. Feeds the Signal surface — topic movement and theme intersections — through counts-only signal_read views; the bridge view that knows *who* stays service-role-only, never read here. Wired; lights up when the read path opens.',
     source: 'Supabase · spine',
     x: 10,
     y: 90,
+    href: '/signal',
   },
   // --- core + surfaces ---
   {
@@ -118,6 +120,9 @@ export const EDGES: SystemEdge[] = [
   { from: 'hub', to: 'egress-gate' },
   { from: 'learning', to: 'university' },
   { from: 'university', to: 'egress-gate' },
+  // spine now feeds the Signal surface through the same egress gate (getPublicTopicIntelligence
+  // ends with assertPublicSafe). The path is wired; the spine status dot tells whether data flows.
+  { from: 'spine', to: 'egress-gate' },
   { from: 'egress-gate', to: 'public' },
-  // spine + notion: intentionally isolated — not yet feeding anything.
+  // notion: intentionally isolated — not yet feeding anything.
 ]
