@@ -1,9 +1,24 @@
-# Phase 2 Build Spec — Topic-Intelligence render (`/signal`) + Orchid re-tone
+# Slice 1 Section B — Hub render (`/signal`) + Orchid re-tone — Build Spec
 
-Successor to `PHASE_1_BUILD_SPEC.md`. Turns the gtm-os → Hub handoff
-(`SESSION_KICKOFF_topic-intel.md`, YED-122 §B) into a build. The gtm-os side is **done and
-verified**; everything here is Hub-side. Two independent tracks: **A** re-tones the whole Hub to the
-"Orchid" identity; **B** builds the `/signal` topic-intelligence surface.
+**Tracks:** Linear **YED-122** (*Slice 1 Section B — signal_read views + Hub render*, sub-issue of
+YED-110), authoritative design in **`ARCHITECTURE.md §9`**, product intent in the ChatPRD Hub PRD.
+
+> **Naming note (do not confuse three numbering axes):** the Hub's *product* phases are **V0 / V1 /
+> V2** (`ARCHITECTURE.md §7`, PRD §7). The topic-intelligence lineage uses **Slices** (0 / 1 / 2) and
+> **Sections** (A / B) under YED-110. The numbered **Steps 1–4** *inside this doc* are just the build
+> order for this one slice — not product phases. (Earlier commits/labels called these "Phase 1–4";
+> read those as "Step 1–4" of Slice 1B.)
+
+Turns the gtm-os → Hub handoff (`SESSION_KICKOFF_topic-intel.md`, YED-122 §B) into a build. The
+gtm-os side is **done and verified**; everything here is Hub-side. Two tracks: **A** re-tones the
+whole Hub to the "Orchid" identity (tracked separately — a cross-cutting identity change, not part of
+YED-122's render scope); **B** builds the `/signal` topic-intelligence surface (YED-122).
+
+> **Surface-model reconciliation:** ARCHITECTURE §9 / YED-122 originally said the topic views render
+> on *"The Work, Live" / Tiers 1–2*. This build instead renders them on a **dedicated `/signal`
+> Tier-2 sibling surface** (linked from `/` and `/system`) — a 30-theme / 124-pair dataset would
+> bloat the proof-of-work stream. ARCHITECTURE §1 + §9 updated to record `/signal` as a first-class
+> surface. Deliberate divergence, not drift.
 
 ---
 
@@ -152,16 +167,30 @@ so the node metric becomes e.g. `30 themes · 124 pairs` (live) and links to `/s
 
 ---
 
-## Phasing & sequence
+## Build steps & sequence (Steps, not product phases — see naming note above)
 
-1. **Phase 1 — Track A (Orchid re-tone).** `globals.css` flip + per-page contrast audit + build.
-   *Do first so `/signal` is born in the final skin.*
-2. **Phase 2 — B1** adapter + gate + tests (buildable now; asserts honest-empty).
-3. **Phase 3 — B2** `/signal` render + B3 `/system` wiring.
-4. **Phase 4 — verify + docs.** Run `scripts/verify-egress.ts` on real data once Alex flips the
-   exposed-schemas toggle + sets env; update `ARCHITECTURE.md` + system-map topology.
-   **Human-in-the-loop before public.**
+1. **Step 1 — Track A (Orchid re-tone).** `globals.css` flip + per-page contrast audit + build.
+   *Done (commit "Phase 1").* Do first so `/signal` is born in the final skin.
+2. **Step 2 — B1** adapter + gate + tests (buildable now; asserts honest-empty). *Done (commit "Phase 2").*
+3. **Step 3 — B2** `/signal` render + B3 `/system` wiring. *Done (commit "Phase 3").*
+4. **Step 4 — verify + docs.** Run `scripts/verify-egress.ts` on real data once the exposed-schemas
+   toggle + env land; update `ARCHITECTURE.md` + system-map topology. **Human-in-the-loop before public.**
+   *In progress: ARCHITECTURE §1/§9 reconciled; verify-egress + health-strip decision remain (below).*
+
+## Status vs YED-122 scope (honest accounting)
+- ✅ `signal_read` render (movement + intersections, counts-only) — shipped, honest-empty until wired.
+- ✅ `/system` spine node wired to `egress-gate → public`; deep-links to `/signal`.
+- ⏳ **Health strip (`topic_intelligence_health`) — DEFERRED.** In YED-122 scope ("+ tripwire strip;
+  clears red-flag #4") but the view lives in schema `signal`, not `signal_read`, so it is **not
+  anon-readable**. Options: (a) gtm-os adds a `signal_read.v_topic_intelligence_health` wrapper +
+  grant (cross-repo, other thread owns it); (b) render cockpit-only via service-role. **Until decided,
+  YED-122 is not "done" and red-flag #4 is only partially cleared.**
+- ⏳ **Public bridge people — DEFERRED (intended end-state).** Per §9 + YED-122, the public surface
+  eventually renders `PublicBridgePerson` (name + public title + themes; never email/phone/linkedin)
+  **only after** `signal.suppression` day-1 rows are seeded. Counts-only for now.
+- ⏳ **Slice 2 discrete `topic_intersection` signal** — gtm-os side, out of Hub scope.
 
 ## Open decisions — resolved
-- **Route name:** `/signal`.
+- **Route name:** `/signal` (a dedicated Tier-2 sibling surface — see the surface-model
+  reconciliation note at the top; ARCHITECTURE §1/§9 updated to match).
 - **Movement table:** all 30 themes, tiered 10 (full) / 10 (brief) / 10 (names).
