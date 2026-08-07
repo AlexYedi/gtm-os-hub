@@ -81,9 +81,19 @@ test('mapTrendLabel folds unknown/absent labels to the safe default (steady)', (
   expect(mapTrendLabel(undefined)).toBe('steady')
 })
 
+test('mapTrendLabel translates the gtm-os upstream vocabulary to the public vocabulary (YED-130)', () => {
+  expect(mapTrendLabel('heating')).toBe('rising')
+  expect(mapTrendLabel('cooling')).toBe('falling')
+  expect(mapTrendLabel('steady')).toBe('steady')
+  expect(mapTrendLabel('new')).toBe('new')
+  expect(mapTrendLabel('INSUFFICIENT_DATA')).toBe('steady') // caveat rides on isLowConfidence
+})
+
 // ---- honest-empty ---------------------------------------------------------
 
 test('getPublicTopicIntelligence returns honest-empty when there is no read path (no env)', async () => {
+  delete process.env.MI_SUPABASE_URL
+  delete process.env.MI_SUPABASE_ANON_KEY
   delete process.env.SPINE_SUPABASE_URL
   delete process.env.SPINE_SUPABASE_ANON_KEY
   const out = await getPublicTopicIntelligence()
