@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { INSTRUMENTING } from '@/lib/ui-constants'
 import type { NodeState, NodeStatus } from '@/lib/sources/system-status'
 import type { SystemNode, SystemEdge } from '@/content/system-map'
@@ -70,6 +71,15 @@ export function NodeDetail({
           </>
         )}
       </div>
+
+      {node.href ? (
+        <Link
+          href={node.href}
+          className="mt-4 inline-block font-mono text-xs text-accent hover:text-accent-dark"
+        >
+          explore {node.label} →
+        </Link>
+      ) : null}
     </div>
   )
 }

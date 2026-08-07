@@ -26,6 +26,9 @@ export default async function Home() {
         <Link href="/system" className="rounded-md px-3 py-1.5 text-ink-soft hover:text-ink">
           Living System Map
         </Link>
+        <Link href="/signal" className="rounded-md px-3 py-1.5 text-ink-soft hover:text-ink">
+          Signal
+        </Link>
         <Link href="/university" className="rounded-md px-3 py-1.5 text-ink-soft hover:text-ink">
           GTM University
         </Link>

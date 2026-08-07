@@ -53,6 +53,9 @@ export default async function SystemPage() {
         <span className="rounded-md bg-surface px-3 py-1.5 font-medium text-ink shadow-sm">
           Living System Map
         </span>
+        <Link href="/signal" className="rounded-md px-3 py-1.5 text-ink-soft hover:text-ink">
+          Signal
+        </Link>
         <Link href="/university" className="rounded-md px-3 py-1.5 text-ink-soft hover:text-ink">
           GTM University
         </Link>
