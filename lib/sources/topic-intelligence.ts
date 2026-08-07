@@ -17,18 +17,25 @@ import { spineClient } from '../supabase/spine'
  *   - assertPublicSafe() is the egress NET on every return path.
  */
 
-// Closed trend vocabulary. gtm-os computes trend_label upstream; we normalise + validate against
-// this allowlist so no upstream free text can reach the surface. Unknown → 'steady' (safe default,
-// mirroring linear.ts mapState). RECONCILE this set against live output in Phase 4 verification.
+// Closed PUBLIC trend vocabulary. The Hub owns its presentation labels. gtm-os computes a distinct
+// UPSTREAM vocabulary (topic_trend.trend_label CHECK: heating/steady/cooling/new/insufficient_data).
+// UPSTREAM_TREND_MAP is the explicit reconciliation (YED-130): upstream → public, so no upstream free
+// text reaches the surface. Anything unrecognised folds to 'steady' (safe neutral). KEEP IN SYNC with
+// gtm-os compute_topic_intelligence's trend_label CHECK constraint.
 export type PublicTrendLabel = 'rising' | 'falling' | 'steady' | 'emerging' | 'new' | 'dormant'
-const TREND_LABELS: readonly PublicTrendLabel[] = [
-  'rising',
-  'falling',
-  'steady',
-  'emerging',
-  'new',
-  'dormant',
-]
+const UPSTREAM_TREND_MAP: Readonly<Record<string, PublicTrendLabel>> = {
+  // gtm-os upstream → Hub public
+  heating: 'rising',
+  cooling: 'falling',
+  steady: 'steady',
+  new: 'new',
+  insufficient_data: 'steady', // "can't say" — the real caveat rides on isLowConfidence, not the label
+  // pass-through: accept the Hub's own vocabulary if upstream ever emits it directly
+  rising: 'rising',
+  falling: 'falling',
+  emerging: 'emerging',
+  dormant: 'dormant',
+}
 
 export interface PublicTopicIntersection {
   themeA: string
@@ -91,10 +98,10 @@ function numOrNull(n: number | null | undefined): number | null {
   return n == null ? null : n
 }
 
-/** Normalise an upstream trend_label to the closed vocabulary. Unknown/absent → 'steady'. */
+/** Translate an upstream (gtm-os) trend_label to the closed public vocabulary. Unknown/absent → 'steady'. */
 export function mapTrendLabel(label: string | null | undefined): PublicTrendLabel {
   const norm = (label ?? '').trim().toLowerCase()
-  return (TREND_LABELS as readonly string[]).includes(norm) ? (norm as PublicTrendLabel) : 'steady'
+  return UPSTREAM_TREND_MAP[norm] ?? 'steady'
 }
 
 /** Pure mapper: raw intersection row → public shape. Counts pass the false-zero guard. */
