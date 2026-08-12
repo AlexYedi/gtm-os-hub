@@ -64,6 +64,19 @@ terms — private) · `LINEAR_API_KEY` (V1) · `COCKPIT_PASSWORD` (V1) · `NEXT_
 This Hub reads — but does not own — data in a separate private repo/workspace (the signal
 pipeline). Coordination is API-only; no shared code, no cross-repo imports.
 
+**MI consolidation (YED-130, done 2026-08).** The old gtm signal spine `/signal` used to read is
+**retired**; `/signal` now reads the **consolidated MI graph** on the Empire pipeline's database
+(a *different* Supabase account from this Hub's) through its anon-safe `signal_read` views. Binding
+constraints for any future data work here:
+- **Read that graph via REST + the publishable/anon key — never the Supabase MCP** (different account;
+  the account boundary is a hard wall).
+- **Don't re-fork the data** — this Hub reads the shared graph, it doesn't own one; there is no
+  gtm-side spine to rebuild.
+- **This Hub's identity is a preserved invariant** (mission, style, University, `/signal`, Orchid) —
+  the consolidation protected it deliberately; keep it.
+- The learning plane (University / time-tracking) stays its own separate project — unaffected.
+Rationale + decision records live in the private Empire pipeline repo → `docs/adr/`.
+
 ### MCP
 Project-scoped MCP config is intentionally NOT committed (public repo). A dev session inherits
 user-scope MCP connectors (Linear, etc.). Add a gitignored `.mcp.json` for project-scoped servers
