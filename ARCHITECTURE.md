@@ -46,6 +46,29 @@ are the single most likely Phase 1 mistake. The control is **default-deny, defen
 - Supabase public reads go through `v_public_*` views that exclude PII columns by construction.
 - Audit the rendered public JSON before the first public deploy.
 
+### Advisor exceptions (accepted-by-design)
+
+The Supabase Security Advisor flags the three public projection views as **CRITICAL
+`security_definer_view`** (`public.v_public_curriculum`, `v_public_progress`, `v_public_submissions`).
+This is a **true-positive detection but accepted-by-design** — do **not** "fix" it by flipping to
+`security_invoker`:
+
+- The views are the deliberate **anon window**. Anon holds no grant on `learning.*` (no schema
+  USAGE, no table SELECT) and reads only these narrow, explicit-column, PII-free views. DEFINER
+  semantics (view runs as owner, bypassing RLS) are *required* for anon to get any rows.
+- Supabase's suggested fix (`security_invoker = true`) is a **security downgrade here**: an invoker
+  view runs as anon, so keeping it working would force `GRANT SELECT` on the `learning.*` base
+  tables to anon plus RLS policies — giving anon direct base-table access and column-level PII
+  exposure on any "public" row. Larger surface, weaker contract.
+- With RLS bypassed, the **view definition is the PII boundary**. It is guarded two ways: explicit
+  column lists (never `select *`; rule above), and `lib/public-view-safety.test.ts`, a CI test that
+  fails any PR adding a private/PII column (`body_md`, `auth_user_id`, email/linkedin, etc.) to a
+  `v_public_*` view.
+
+Disposition: these three lints are **dismissed with a rationale pointing here** in the Advisor UI so
+the dashboard stays clean and future *real* findings aren't buried. `function_search_path_mutable`
+(the two `learning.*` helpers) is a genuine gap and **is** fixed — `supabase/migrations/0005_advisor_hardening.sql`.
+
 ---
 
 ## 1. Surfaces — progressive disclosure
