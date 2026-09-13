@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { isCockpitAuthed } from '@/lib/auth'
 import { getCockpitState, hasServiceKey } from '@/lib/sources/cockpit'
-import { findArea, findSubtask } from '@/lib/curriculum'
+import { findSubtask, pathStages, stageResources } from '@/lib/curriculum'
 import type { Subtask } from '@/content/curriculum/types'
 import {
   startTimerAction,
@@ -21,18 +21,24 @@ const STATUS_LABEL: Record<string, string> = {
   done: 'Done',
 }
 
-export default async function CockpitUniversity() {
+export default async function CockpitUniversity({ searchParams }: { searchParams: Promise<{ stage?: string }> }) {
   if (!(await isCockpitAuthed())) redirect('/cockpit/login')
 
   const noKey = !hasServiceKey()
   const state = await getCockpitState()
 
-  const area = findArea('d3-gtm-engineering')
-  const slice = area?.sections.find((s) => s.id === 'd3-signal-data-eng')
-  const sliceSubtasks: Subtask[] = slice?.modules.flatMap((m) => m.subtasks) ?? []
-
   const timeFor = (id: string) => state?.time_by_unit?.[id] ?? 0
   const statusFor = (id: string) => state?.status_by_unit?.[id]?.status ?? 'not_started'
+
+  // Working set = the requested stage, else the first unfinished (non-continuous) stage on the path.
+  const { stage: stageParam } = await searchParams
+  const stages = pathStages()
+  const activeStage =
+    stages.find((s) => s.stage.id === stageParam) ??
+    stages.find((s) => !s.stage.continuous && s.subtasks.some((r) => statusFor(r.subtask.id) !== 'done')) ??
+    stages[stages.length - 1]
+  const sliceSubtasks: Subtask[] = activeStage.subtasks.map((r) => r.subtask)
+  const resources = stageResources(activeStage)
   const running = state?.running ?? null
   const runningRef = running ? findSubtask(running.unit_id) : null
   const fc = state?.forecast ?? null
@@ -94,10 +100,24 @@ export default async function CockpitUniversity() {
         </section>
       ) : null}
 
-      {/* Slice working set */}
+      {/* Active path stage */}
       <section className="mb-8">
-        <h2 className="mb-1 text-lg font-semibold">{slice?.title ?? 'Working set'}</h2>
-        <p className="mb-4 text-sm text-ink-muted">Log time, mark progress, and submit work on the active D3 slice.</p>
+        <nav className="mb-4 flex flex-wrap gap-1 font-mono text-[11px]">
+          {stages.map((s, i) => (
+            <Link
+              key={s.stage.id}
+              href={`/cockpit/university?stage=${s.stage.id}`}
+              title={s.stage.title}
+              className={`rounded-md border px-2 py-1 ${s.stage.id === activeStage.stage.id ? 'border-accent text-ink' : 'border-edge text-ink-soft hover:text-ink'}`}
+            >
+              {s.stage.continuous ? '∞' : i}
+            </Link>
+          ))}
+        </nav>
+        <h2 className="mb-1 text-lg font-semibold">{activeStage.stage.title}</h2>
+        <p className="text-sm text-ink-muted">{activeStage.stage.goal}</p>
+        <p className="mt-1 text-xs text-ink-soft">Why here: {activeStage.stage.why}</p>
+        <p className="mb-4 mt-1 font-mono text-[11px] text-ink-soft">exit → {activeStage.stage.exit}</p>
         <ul className="space-y-2">
           {sliceSubtasks.map((st) => {
             const status = statusFor(st.id)
@@ -152,6 +172,21 @@ export default async function CockpitUniversity() {
             )
           })}
         </ul>
+        {resources.length ? (
+          <div className="mt-4 rounded-lg border border-edge bg-paper p-4">
+            <p className="font-mono text-[11px] uppercase tracking-wide text-ink-soft">Resources for this stage</p>
+            <ul className="mt-2 space-y-1 text-sm">
+              {resources.map((r) => (
+                <li key={r.url}>
+                  <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-accent hover:text-accent-dark">
+                    {r.title}
+                  </a>
+                  <span className="ml-2 font-mono text-[10px] uppercase text-ink-soft">{r.kind}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </section>
 
       {/* Submit work */}

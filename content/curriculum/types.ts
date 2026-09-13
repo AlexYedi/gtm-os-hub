@@ -30,12 +30,22 @@ export interface Subtask {
   ref?: string
 }
 
+export type ResourceKind = 'article' | 'docs' | 'book' | 'paper' | 'course' | 'repo'
+
+export interface Resource {
+  title: string
+  url: string
+  kind: ResourceKind
+}
+
 export interface Module {
   id: string
   title: string
   summary?: string
   /** Markdown lesson content. */
   body?: string
+  /** Curated reading/docs for the module (URLs verified at authoring time). */
+  resources?: Resource[]
   subtasks: Subtask[]
 }
 
@@ -57,6 +67,28 @@ export interface Area {
   sections: Section[]
 }
 
+/**
+ * A stage of the learning path. Areas say WHAT a skill is; the path says WHEN to
+ * learn it. Stages reference subtask ids, so sequencing never touches unit ids.
+ */
+export interface PathStage {
+  /** Stable slug. */
+  id: string
+  title: string
+  /** What you can do at the end of the stage. */
+  goal: string
+  /** Why the stage sits here in the sequence. */
+  why: string
+  /** The observable exit criterion. */
+  exit: string
+  /** Runs underneath every other stage rather than as a phase. */
+  continuous?: boolean
+  /** Ordered subtask ids — every subtask appears in exactly one stage. */
+  subtaskIds: string[]
+}
+
 export interface Curriculum {
   areas: Area[]
+  /** The recommended sequence across all areas. */
+  path: PathStage[]
 }

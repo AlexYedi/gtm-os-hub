@@ -1,5 +1,5 @@
 import { curriculum } from '../content/curriculum'
-import type { Area, Curriculum, Module, Section, Subtask } from '../content/curriculum/types'
+import type { Area, Curriculum, Module, PathStage, Resource, Section, Subtask } from '../content/curriculum/types'
 
 /** Flat DB-shaped row (mirrors learning.curriculum_unit columns). */
 export interface FlatUnit {
@@ -96,3 +96,51 @@ export function curriculumTotals(c: Curriculum = curriculum) {
 }
 
 export { curriculum }
+
+// ── The path ─────────────────────────────────────────────────────────────
+
+export interface StageRef { stage: PathStage; subtasks: SubtaskRef[] }
+
+/** The path with each stage's subtask ids resolved. Throws on an unknown id. */
+export function pathStages(c: Curriculum = curriculum): StageRef[] {
+  const byId = new Map(allSubtasks(c).map((r) => [r.subtask.id, r]))
+  return c.path.map((stage) => ({
+    stage,
+    subtasks: stage.subtaskIds.map((id) => {
+      const ref = byId.get(id)
+      if (!ref) throw new Error(`Path stage ${stage.id} references unknown subtask: ${id}`)
+      return ref
+    }),
+  }))
+}
+
+/** Throw unless stage ids are unique and every subtask sits in exactly one stage. */
+export function assertPathCoverage(c: Curriculum = curriculum): void {
+  const stageIds = new Set<string>()
+  const placed = new Map<string, string>()
+  for (const stage of c.path) {
+    if (stageIds.has(stage.id)) throw new Error(`Duplicate path stage id: ${stage.id}`)
+    stageIds.add(stage.id)
+    for (const id of stage.subtaskIds) {
+      const prior = placed.get(id)
+      if (prior) throw new Error(`Subtask ${id} is in two path stages: ${prior} and ${stage.id}`)
+      placed.set(id, stage.id)
+    }
+  }
+  const missing = allSubtasks(c).map((r) => r.subtask.id).filter((id) => !placed.has(id))
+  if (missing.length) throw new Error(`Subtasks missing from the path: ${missing.join(', ')}`)
+  pathStages(c)
+}
+
+/** Distinct resources across the modules a stage touches, in path order. */
+export function stageResources(ref: StageRef): Resource[] {
+  const seen = new Set<string>()
+  const out: Resource[] = []
+  for (const { module } of ref.subtasks)
+    for (const r of module.resources ?? [])
+      if (!seen.has(r.url)) {
+        seen.add(r.url)
+        out.push(r)
+      }
+  return out
+}
