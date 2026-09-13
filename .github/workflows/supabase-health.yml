@@ -1,0 +1,63 @@
+name: Supabase health check
+
+# Daily health check for the Hub's learning database (GTM_OS_HUB, YED-165).
+#
+# Why: on 2026-09-13 this project's server froze for an unknown length of time and nothing
+# noticed. The dashboard said "unhealthy", every request returned 504, and there were no
+# Postgres logs; a restart fixed it. The retired spine heartbeat (gtm-os, YED-135) only alerted
+# when it could not connect at all (HTTP 000), so it would have reported that outage as healthy.
+# This check requires real answers: Auth must return 200 AND a database-backed read must
+# return rows. One retry after 60s so a single blip does not alert.
+#
+# Side effect: the daily request keeps the free-tier project from pausing for inactivity.
+# Alerting: a failed run sends GitHub's standard workflow-failure email.
+
+on:
+  schedule:
+    - cron: '23 13 * * *'   # daily 13:23 UTC (morning US Eastern); off the top of the hour
+  workflow_dispatch:        # allow manual runs
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    name: GTM_OS_HUB health
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Probe Auth + a database-backed read
+        env:
+          URL: ${{ secrets.HUB_SUPABASE_URL }}
+          # Publishable key: client-safe, and it can only read the PII-free v_public_* views.
+          KEY: ${{ secrets.HUB_SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          set -uo pipefail
+          if [ -z "${URL:-}" ] || [ -z "${KEY:-}" ]; then
+            echo "::error::Missing HUB_SUPABASE_URL / HUB_SUPABASE_PUBLISHABLE_KEY repo secrets."
+            exit 1
+          fi
+          base="${URL%/}"
+
+          probe() {
+            rm -f /tmp/headers
+            auth=$(curl -s -o /dev/null -w '%{http_code}' -m 30 \
+              -H "apikey: $KEY" "$base/auth/v1/health" || echo 000)
+            db=$(curl -s -o /dev/null -D /tmp/headers -w '%{http_code}' -m 30 \
+              -H "apikey: $KEY" -H "Authorization: Bearer $KEY" -H "Prefer: count=exact" \
+              "$base/rest/v1/v_public_curriculum?select=unit_id&limit=1" || echo 000)
+            units=$(tr -d '\r' < /tmp/headers 2>/dev/null | awk -F/ 'tolower($0) ~ /^content-range:/ {print $NF}')
+            units=${units:-0}
+            echo "auth /health -> HTTP $auth | v_public_curriculum -> HTTP $db | curriculum units: $units"
+            [ "$auth" = "200" ] || return 1
+            [ "$db" = "200" ] || [ "$db" = "206" ] || return 1
+            [ "$units" -gt 0 ] 2>/dev/null || return 1
+          }
+
+          if probe; then echo "Healthy."; exit 0; fi
+          echo "First probe failed; retrying in 60s to rule out a blip..."
+          sleep 60
+          if probe; then echo "Healthy on retry."; exit 0; fi
+
+          echo "::error::GTM_OS_HUB is unhealthy: Auth and/or the database are not answering. Fix: Supabase dashboard -> project nnywrmetdoixdbevvsvf -> Project Settings -> General -> Restart project. Context: YED-165."
+          exit 1

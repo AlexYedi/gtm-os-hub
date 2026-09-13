@@ -3,7 +3,7 @@
  * Sync the content-as-code curriculum -> learning.curriculum_unit.
  *
  *   bun scripts/sync-curriculum.ts --sql     # print idempotent upsert SQL (no DB needed)
- *   bun scripts/sync-curriculum.ts           # live upsert (needs SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY)
+ *   bun scripts/sync-curriculum.ts           # live upsert — only works if `learning` is exposed to the Data API (it is not by default)
  *
  * The content-as-code tree (content/curriculum) stays the source of truth;
  * curriculum_unit is a derived projection so SQL can roll up progress + time.
@@ -62,6 +62,9 @@ async function main() {
   const { error } = await sb.schema('learning').from('curriculum_unit').upsert(rows, { onConflict: 'unit_id' })
   if (error) {
     console.error('Sync failed:', error.message)
+    // The learning schema is deliberately not exposed to the Data API (only `public` is), so the
+    // live path fails with PGRST106. Generate SQL and run it in the Supabase SQL editor instead.
+    if (error.code === 'PGRST106') console.error('Use: bun run sync:curriculum:sql, then paste the output into the SQL editor.')
     process.exit(1)
   }
   console.error(`Synced ${rows.length} units (${totals.areas} areas, ${totals.modules} modules, ${totals.subtasks} subtasks).`)
