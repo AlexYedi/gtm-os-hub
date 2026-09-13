@@ -9,7 +9,7 @@
  * curriculum_unit is a derived projection so SQL can roll up progress + time.
  * Upsert-only (never prunes) so removing a unit can't orphan logged work.
  */
-import { flattenCurriculum, assertUniqueIds, curriculumTotals } from '../lib/curriculum'
+import { flattenCurriculum, assertUniqueIds, assertPathCoverage, curriculumTotals } from '../lib/curriculum'
 
 function sqlStr(v: string): string {
   return `'${v.replace(/'/g, "''")}'`
@@ -44,6 +44,7 @@ on conflict (unit_id) do update set
 
 async function main() {
   assertUniqueIds()
+  assertPathCoverage()
   const totals = curriculumTotals()
   if (process.argv.includes('--sql')) {
     console.log(buildUpsertSql())

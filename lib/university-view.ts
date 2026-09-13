@@ -100,3 +100,32 @@ export function submissionsByUnit(subs: PublicSubmission[]): Record<string, Publ
   for (const s of subs) (m[s.unitId] ??= []).push(s)
   return m
 }
+
+export interface StageView {
+  id: string
+  title: string
+  goal: string
+  exit: string
+  continuous: boolean
+  done: number
+  total: number
+  pct: number
+}
+
+/** Per-stage roll-up for the path (completion only — no pace). */
+export function stageViews(pm: ProgressMap, c: Curriculum = defaultCurriculum): StageView[] {
+  return c.path.map((s) => {
+    const total = s.subtaskIds.length
+    const done = s.subtaskIds.filter((id) => isDone(pm, id)).length
+    return {
+      id: s.id,
+      title: s.title,
+      goal: s.goal,
+      exit: s.exit,
+      continuous: !!s.continuous,
+      done,
+      total,
+      pct: total ? Math.round((100 * done) / total) : 0,
+    }
+  })
+}
