@@ -58,7 +58,7 @@ export interface Section {
 
 export interface Area {
   id: string
-  /** 'd1'..'d9' */
+  /** 'd1'..'d10' */
   domainId: string
   title: string
   tier: Tier
