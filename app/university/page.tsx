@@ -27,8 +27,8 @@ export default async function UniversityPage() {
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink-soft">GTM University · in public</p>
         <h1 className="mt-3 text-4xl font-bold md:text-5xl">The path, instrumented</h1>
         <p className="mt-4 max-w-prose text-lg leading-relaxed text-ink-muted">
-          A full-stack GTM-engineering curriculum I&rsquo;m working in the open — nine domains, sequenced into one path from
-          engineering fundamentals to agents that run revenue motions end to end. Rather than guess a timeline, I <em>measure</em> the work: every
+          A full-stack GTM-engineering curriculum I&rsquo;m working in the open — ten domains, sequenced into one path. It starts with
+          a live pursuit: my own job search, run as a full-cycle enterprise sales motion, with every commercial drill aimed at a real account. Rather than guess a timeline, I <em>measure</em> the work: every
           exercise, project, and capstone is logged, and the remaining effort is forecast from real velocity.
           The data foundation discipline, applied to my own learning.
         </p>
@@ -59,7 +59,7 @@ export default async function UniversityPage() {
         </p>
       </section>
 
-      {/* The path — one sequence across the nine areas */}
+      {/* The path — one sequence across the ten areas */}
       <section className="mb-12">
         <div className="mb-4 flex items-baseline justify-between">
           <h2 className="text-lg font-semibold">The path</h2>
@@ -87,7 +87,7 @@ export default async function UniversityPage() {
         </ol>
       </section>
 
-      {/* The nine areas */}
+      {/* The ten areas */}
       <section className="mb-12">
         <h2 className="mb-4 text-lg font-semibold">Areas of expertise</h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">

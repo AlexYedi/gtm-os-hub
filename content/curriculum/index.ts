@@ -1,4 +1,5 @@
 import type { Curriculum, Resource } from './types'
+import { livePursuit } from './live-pursuit'
 
 // GTM University — the elevated full-stack GTM curriculum.
 // Synthesized from the Full-Stack GTM Roadmap (V1.1) + 4 Phase-0 sources
@@ -15,6 +16,11 @@ import type { Curriculum, Resource } from './types'
 // access, shared builder platforms, explainable models. Blend, not pivot: every
 // v1 unit is kept (ids are immutable), gaps are filled add-only, and `path`
 // sequences the whole program into stages.
+//
+// v3 (2026-09-29, GTM-25): job-search horizon to 2027-01-01; D10 Live Pursuit
+// added and sequenced first; gtm-os spine retired (YED-130), refs re-pointed to
+// the Empire pipeline; deal-shaped drills retargeted at live Tier-1 accounts;
+// stages that need net-new infrastructure deferred past 1/1/27.
 
 const RUBRIC_BUILD = [
   { level: 'novice' as const, descriptor: 'Followed a reference/tutorial; works on the happy path; little error handling.' },
@@ -81,8 +87,8 @@ export const curriculum: Curriculum = {
               title: 'Qualification frameworks as inspection tools',
               summary: 'MEDDPICC, Command of the Message, Winning by Design (SPICED).',
               subtasks: [
-                { id: 'd1-deal-memo', title: 'Deal strategy memo (MEDDPICC + SPICED, multi-thread org map)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD, prompt: 'Write a 3–5 page deal strategy memo on a real prospect.' },
-                { id: 'd1-discovery-call', title: 'Mock discovery call + self-review vs SPICED', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD },
+                { id: 'd1-deal-memo', title: 'Deal strategy memo (MEDDPICC + SPICED, multi-thread org map)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD, prompt: 'Deal strategy memo on a Tier-1 target company: MEDDPICC on the hiring process, buying committee mapped, multi-thread plan.' },
+                { id: 'd1-discovery-call', title: 'Mock discovery call + self-review vs SPICED', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD, prompt: 'Run a real first-round interview as discovery; self-review the recording against SPICED.' },
               ],
             },
           ],
@@ -96,7 +102,7 @@ export const curriculum: Curriculum = {
               id: 'd1-value',
               title: 'Value-based selling',
               subtasks: [
-                { id: 'd1-exec-email', title: 'Exec-sponsor email to a CRO using only public signals', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD },
+                { id: 'd1-exec-email', title: 'Exec-sponsor email to a CRO using only public signals', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD, prompt: 'To the CRO/VP Sales at a Tier-1 target, public signals only, three parts: the signal, the offer, a small ask.' },
               ],
             },
           ],
@@ -114,8 +120,8 @@ export const curriculum: Curriculum = {
                 '## Why this matters\n\nThe fastest way to build a useless sales agent is to automate the process as documented instead of the process as practiced. Sit with the work first: time each step, note where sellers override the playbook, and mark every decision that carries relationship or deal risk.\n\n## What you are building\n\nA friction map of real workflows and an agent design brief naming the trigger, the decision points, the data each step needs, and the steps that stay human. Every later build in the path is graded against this brief.',
               resources: [R.agentsBuilding],
               subtasks: [
-                { id: 'd1-wg-shadow-sessions', title: 'Shadow 3 real seller workflows (inbound triage, outbound prep, pipeline review) → time-and-friction map', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD },
-                { id: 'd1-wg-agent-brief', title: 'Agent design brief grounded in an observed workflow (trigger, decision points, data needs, what stays human)', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD, prompt: 'Pick the highest-friction workflow from the shadow map and write the brief an engineer could build from.' },
+                { id: 'd1-wg-shadow-sessions', title: 'Shadow 3 real seller workflows (inbound triage, outbound prep, pipeline review) → time-and-friction map', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD, prompt: 'Shadow your own D10 motion for two weeks and build the friction map from it.' },
+                { id: 'd1-wg-agent-brief', title: 'Agent design brief grounded in an observed workflow (trigger, decision points, data needs, what stays human)', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD, prompt: 'Pick the highest-friction step of your own D10 motion and write the brief an engineer could build from.' },
               ],
             },
           ],
@@ -156,7 +162,7 @@ export const curriculum: Curriculum = {
               id: 'd2-bowtie',
               title: 'Bowtie funnel & diagnostics',
               subtasks: [
-                { id: 'd2-funnel-decomp', title: 'Funnel decomposition retrospective on one closed deal', kind: 'exercise', complexity: 3, rubric: RUBRIC_BUILD },
+                { id: 'd2-funnel-decomp', title: 'Funnel decomposition retrospective on one closed deal', kind: 'exercise', complexity: 3, rubric: RUBRIC_BUILD, prompt: 'Decompose the job-search pipeline: stage conversion, velocity and slippage, against the do-nothing baseline.' },
               ],
             },
           ],
@@ -240,7 +246,7 @@ export const curriculum: Curriculum = {
           id: 'd3-signal-data-eng',
           title: 'Signal & Data Engineering',
           summary:
-            'The rung-1/rung-2 core: a clean data foundation, then the modeling that predicts. Fully fleshed for the V1 slice — these are live gtm-os builds you can log against tonight.',
+            'The rung-1/rung-2 core: a clean data foundation, then the modeling that predicts. The live instance is the Empire State MI graph (spine_client.py, PII guard); log time against the units the work actually touches.',
           modules: [
             {
               id: 'd3-sde-spine',
@@ -254,7 +260,7 @@ export const curriculum: Curriculum = {
                   title: 'Scaffold a Supabase schema with rigor (tables, RLS, idempotency, v_public_ views)',
                   kind: 'project',
                   complexity: 3,
-                  ref: 'YED-45',
+                  ref: 'Empire ADR-9 / ADR-10',
                   prompt: 'Design + apply a domain schema: stable keys, RLS, generated/derived columns, and PII-safe public projection views. Document the migration.',
                   rubric: RUBRIC_BUILD,
                 },
@@ -267,7 +273,7 @@ export const curriculum: Curriculum = {
               body:
                 '## Rung 1, properly\n\nClean, de-duped, trustworthy records. Three named craft skills:\n\n1. **Identity resolution** — a canonical entity ID with a crosswalk to source IDs (Notion/HubSpot/Apollo).\n2. **Deduplication** — insert-time uniqueness + a merge-and-purge sweep.\n3. **Provenance** — every row stamped with `source` + `ingested_at`, so conflicts are explainable.',
               subtasks: [
-                { id: 'd3-sde-identity', title: 'Identity resolution + entity crosswalk', kind: 'project', complexity: 4, ref: 'YED-47', rubric: RUBRIC_BUILD, prompt: 'Build a canonical entity ID with a crosswalk table (source, external_id).' },
+                { id: 'd3-sde-identity', title: 'Identity resolution + entity crosswalk', kind: 'project', complexity: 4, ref: 'YED-47', rubric: RUBRIC_BUILD, prompt: 'Read the shipped S1b-lite resolver (YED-47); write the design note for the parked DDL half (entity_alias, entity_merge) and the re-trigger that would justify it. Build only if the trigger fires.' },
                 { id: 'd3-sde-dedup', title: 'Dedup + merge-and-purge routine', kind: 'project', complexity: 3, ref: 'YED-47', rubric: RUBRIC_BUILD },
                 { id: 'd3-sde-provenance', title: 'Provenance / source stamping + conflict log', kind: 'exercise', complexity: 2, ref: 'YED-47', rubric: RUBRIC_BUILD },
               ],
@@ -280,9 +286,9 @@ export const curriculum: Curriculum = {
                 '## Rung 2 — the differentiator\n\nUnique data points that *predict* purchase, expansion, or churn. This is the thinnest rung in most curricula and the clearest hiring signal. You will define ICP fit attributes, weight them, and produce a fit/propensity score that downstream activation can act on.',
               resources: [R.molnar, R.shap],
               subtasks: [
-                { id: 'd3-sde-icp-attrs', title: 'Define ICP fit attributes + scoring rubric', kind: 'exercise', complexity: 3, ref: 'YED-59', rubric: RUBRIC_BUILD },
-                { id: 'd3-sde-score-model', title: 'Build a propensity / fit-score model', kind: 'project', complexity: 4, ref: 'YED-59', rubric: RUBRIC_BUILD, prompt: 'Implement a weighted fit/propensity score over enriched account attributes; validate against known-good accounts.' },
-                { id: 'd3-sde-explainable', title: 'Explainable score: per-account reason codes (feature contributions) an agent can quote to a seller', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD, prompt: 'Extend the score so every output carries its top contributing factors in plain language; check with sellers that the reasons hold up on 10 known accounts.' },
+                { id: 'd3-sde-icp-attrs', title: 'Turn the written target-employer ICP (D10) into weighted fit attributes + a scoring rubric', kind: 'exercise', complexity: 3, rubric: RUBRIC_BUILD },
+                { id: 'd3-sde-score-model', title: 'Fit score over the target-company list, validated against the 10 you would most want', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD, prompt: 'Implement the weighted score in the role scanner (/scan-roles); D10 owns the judgment, this builds the scorer.' },
+                { id: 'd3-sde-explainable', title: 'Explainable score: per-account reason codes (feature contributions) an agent can quote to a seller', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD, prompt: 'Every target carries its top reasons in plain language; check them against 10 companies you already know.' },
               ],
             },
             {
@@ -341,7 +347,7 @@ export const curriculum: Curriculum = {
               resources: [R.tsHandbook, R.pyTutorial, R.googleReview, R.sweAtGoogle, R.claudeCodeBP],
               subtasks: [
                 { id: 'd3-pe-ts-service', title: 'Rebuild one pipeline script as a typed TypeScript module with unit tests + CI (lint, typecheck, test on every PR)', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD },
-                { id: 'd3-pe-python', title: 'Python working fluency: port one data job to Python with pytest', kind: 'exercise', complexity: 3, rubric: RUBRIC_BUILD },
+                { id: 'd3-pe-python', title: 'Python working fluency: pytest coverage for one existing pipeline script (role scanner or spine client; guarded files need human review)', kind: 'exercise', complexity: 3, rubric: RUBRIC_BUILD },
                 { id: 'd3-pe-code-review', title: 'Review 5 real PRs against a written review checklist; record what you caught and what you missed', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD },
               ],
             },
@@ -360,7 +366,7 @@ export const curriculum: Curriculum = {
               resources: [R.innersource, R.codeowners, R.agentSkills],
               subtasks: [
                 { id: 'd3-sp-contrib-conventions', title: 'Contribution conventions for a shared skills repo (CONTRIBUTING, CODEOWNERS, PR template, required checks)', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD },
-                { id: 'd3-sp-skill-tests', title: 'Every published skill/agent ships with eval cases that run in CI', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD },
+                { id: 'd3-sp-skill-tests', title: 'Eval cases for the two skills that fail most often (on demand, not an every-build mandate)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD },
               ],
             },
           ],
@@ -374,9 +380,9 @@ export const curriculum: Curriculum = {
               id: 'd3-cap-modules',
               title: 'GTM Engineering capstones',
               subtasks: [
-                { id: 'd3-cap-1-signal-pipeline', title: 'Capstone 1 — Signal Pipeline live (spine + hygiene + 2–3 signals + R2 dashboard)', kind: 'capstone', complexity: 5, isCapstone: true, rubric: RUBRIC_BUILD },
-                { id: 'd3-cap-2-outbound-engine', title: 'Capstone 2 — Event-Driven Outbound Engine (signal -> ICP -> personalize -> CRM -> sequence)', kind: 'capstone', complexity: 5, isCapstone: true, rubric: RUBRIC_BUILD },
-                { id: 'd3-cap-3-consulting-sim', title: 'Capstone 3 — Forward-Deployed Consulting Simulation (scope-only)', kind: 'capstone', complexity: 3, isCapstone: true, rubric: RUBRIC_BUILD },
+                { id: 'd3-cap-1-signal-pipeline', title: 'Capstone 1 — Signal graph live (MI graph + hygiene + 2–3 signal producers + a read-only view)', kind: 'capstone', complexity: 5, isCapstone: true, rubric: RUBRIC_BUILD },
+                { id: 'd3-cap-2-outbound-engine', title: 'Capstone 2 — Event-Driven Outbound Engine (signal -> ICP -> personalize -> CRM -> sequence); D10 multi-threaded outreach is the manual version', kind: 'capstone', complexity: 5, isCapstone: true, rubric: RUBRIC_BUILD },
+                { id: 'd3-cap-3-consulting-sim', title: 'Capstone 3 — Forward-Deployed Consulting Simulation (scope-only)', kind: 'capstone', complexity: 3, isCapstone: true, rubric: RUBRIC_BUILD, prompt: 'Scope a forward-deployed engagement for one of a Tier-1 target\'s public customers: the take-home you would be handed.' },
               ],
             },
           ],
@@ -502,7 +508,7 @@ export const curriculum: Curriculum = {
               title: 'Agents, tool use, MCP, and evaluation',
               resources: [R.agentsBuilding, R.multiAgent, R.mcpIntro, R.hamelEvals],
               subtasks: [
-                { id: 'd5-eval-harness', title: 'Eval harness (10 golden examples + LLM-as-judge + regression log)', kind: 'project', complexity: 4, ref: 'YED-48', rubric: RUBRIC_BUILD },
+                { id: 'd5-eval-harness', title: 'Eval harness (10 golden examples + LLM-as-judge + regression log)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD, prompt: 'Against a non-pipeline artifact; the Empire pipeline deliberately runs without a harness (complexity reset 2026-09-28).' },
                 { id: 'd5-mcp-server', title: 'Ship one MCP server (reads a Notion DB or a Supabase view)', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD },
                 { id: 'd5-agentic-system', title: 'Non-Empire-State agentic system (single LLM + 3–5 tools + 1 eval suite)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD },
               ],
@@ -559,7 +565,7 @@ export const curriculum: Curriculum = {
               subtasks: [
                 { id: 'd5-eo-transcript-analysis', title: 'Error analysis on 50 real agent transcripts (open coding → failure taxonomy → top-3 fixes shipped)', kind: 'exercise', complexity: 3, rubric: RUBRIC_BUILD },
                 { id: 'd5-eo-seeded-suite', title: 'Seeded scenarios + scoring rubrics + a regression run on every change (CI-gated)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD },
-                { id: 'd5-eo-judge-validation', title: 'Validate an LLM judge against human labels (agreement rate, disagreement review, rubric fixes)', kind: 'exercise', complexity: 3, ref: 'YED-109', rubric: RUBRIC_BUILD },
+                { id: 'd5-eo-judge-validation', title: 'Validate the on-demand build-quality judge against your own labels, and write up why the two-seat quorum was removed (agreement, cost, override rate)', kind: 'exercise', complexity: 3, ref: 'YED-231', rubric: RUBRIC_BUILD },
               ],
             },
           ],
@@ -593,7 +599,7 @@ export const curriculum: Curriculum = {
               body:
                 '## The highest-leverage skill\n\nRosenthal flags Content Engineering as *"potentially the most powerful"* GTME skill; Apollo treats AI content systems as table stakes. This is not "writing with ChatGPT" — it is a **system**: structured generation, voice/quality evals, human-in-the-loop review, and a distribution pipeline. It sits between D5 (AI) and D9 (Writing) and powers the Empire State distribution work.',
               subtasks: [
-                { id: 'd5-ce-pipeline', title: 'Build a content-generation pipeline with quality evals + HITL review', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD },
+                { id: 'd5-ce-pipeline', title: 'Build a content-generation pipeline with quality evals + HITL review', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD, prompt: 'Document and extend the shipped 3-variant + Notion-review pipeline: name the check that replaces an eval (comment mining), and record the variant pick-rate baseline before changing anything.' },
               ],
             },
           ],
@@ -640,7 +646,7 @@ export const curriculum: Curriculum = {
               title: 'Positioning + strategic narrative',
               subtasks: [
                 { id: 'd6-positioning-onepager', title: 'Positioning one-pager for yourself (Dunford template)', kind: 'exercise', complexity: 2 },
-                { id: 'd6-battlecard', title: 'Competitive battlecard (Clay vs one alternative), published', kind: 'exercise', complexity: 2 },
+                { id: 'd6-battlecard', prompt: 'From the chair of that target\'s own prospect.', title: 'Competitive battlecard (a Tier-1 target company vs its closest alternative), interview-ready, not public', kind: 'exercise', complexity: 2 },
                 { id: 'd6-narrative', title: 'Strategic narrative piece (Raskin 5-part, ~1,500–2,000 words)', kind: 'project', complexity: 3 },
               ],
             },
@@ -679,9 +685,9 @@ export const curriculum: Curriculum = {
               id: 'd7-core',
               title: 'Success planning + health scoring',
               subtasks: [
-                { id: 'd7-msp', title: 'Mutual Success Plan for a real prospect', kind: 'exercise', complexity: 2 },
+                { id: 'd7-msp', title: 'Mutual Success Plan for a real prospect', kind: 'exercise', complexity: 2, prompt: 'A mutual action plan for one live Tier-1 process: the shared timeline from first round to offer, agreed with the recruiter or hiring manager.' },
                 { id: 'd7-health', title: 'Health scorecard (10-metric, weighted, for AI-native SaaS)', kind: 'project', complexity: 3 },
-                { id: 'd7-winloss', title: 'Win/loss analysis (ELEVATION: customer feedback loop)', kind: 'exercise', complexity: 2 },
+                { id: 'd7-winloss', title: 'Win/loss analysis (ELEVATION: customer feedback loop)', kind: 'exercise', complexity: 2, prompt: 'A win/loss note on every closed interview process, same template, rolled up monthly and fed back into the D10 ICP and pitch (running).' },
               ],
             },
           ],
@@ -747,7 +753,7 @@ export const curriculum: Curriculum = {
               id: 'd9-craft',
               title: 'Writing as thinking + public cadence',
               subtasks: [
-                { id: 'd9-exec-brief', title: '1-page executive brief (BLUF/Minto)', kind: 'exercise', complexity: 2 },
+                { id: 'd9-exec-brief', title: '1-page executive brief (BLUF/Minto)', kind: 'exercise', complexity: 2, prompt: 'On one Empire pipeline build decision (for example, the judge removal).' },
                 { id: 'd9-scqa-rewrite', title: 'Narrative rewrite of a post using SCQA + engagement compare', kind: 'exercise', complexity: 2 },
                 { id: 'd9-cadence', title: 'Public cadence: ship a weekly post (running)', kind: 'exercise', complexity: 1 },
               ],
@@ -798,92 +804,112 @@ export const curriculum: Curriculum = {
         },
       ],
     },
+
+    // ──────────────────────── D10 — Live Pursuit ──────────────────────
+    livePursuit,
   ],
 
-  // ── The path: one sequence across all nine areas ─────────────────────
+  // ── The path: one sequence across all ten areas ──────────────────────
   // Areas say WHAT a skill is; the path says WHEN to learn it. Every subtask
-  // sits in exactly one stage (enforced by lib/curriculum.test.ts).
+  // sits in exactly one stage (enforced by lib/curriculum.test.ts). v3: the
+  // search is the forcing function; stages prefixed 'After 1/1/27' are deferred.
   path: [
     {
       id: 'stage-0-rituals',
       title: 'Always on — operating rituals',
       continuous: true,
-      goal: 'A weekly public post, a decision journal, and a weekly review running underneath every other stage.',
+      goal: 'A weekly public post, a decision journal, a weekly review, the weekly pipeline review and a win/loss note on every closed process, running underneath every other stage.',
       why: 'These compound only when they run the whole way through; they are not a phase to finish.',
       exit: 'Running, not finished — measured by streak.',
-      subtaskIds: ['d9-cadence', 'd9-decision-journal', 'd9-weekly-review'],
+      subtaskIds: ['d9-cadence', 'd9-decision-journal', 'd9-weekly-review', 'd10-op-pipeline-review', 'd7-winloss'],
+    },
+    {
+      id: 'stage-live-pursuit',
+      title: 'Live pursuit — the search as a GTM motion',
+      goal: 'A written ICP, a scored Tier-1 list, a CRM pipeline, buying-committee maps and multi-threaded processes open at Tier-1 accounts, run through to a signed offer.',
+      why: 'The offer deadline (2027-01-01) and 4–8 week hiring cycles mean the pipeline must be full by early November. Every commercial drill in the curriculum gets a live counterparty here.',
+      exit: 'Tier-1 list scored with reasons, positioning one-pager done, multi-threaded processes open at Tier-1 accounts by week 6; closes on a signed offer.',
+      subtaskIds: ['d10-mm-icp', 'd10-mm-tiering', 'd10-mm-pipeline', 'd3-sde-icp-attrs', 'd3-sde-score-model', 'd3-sde-explainable', 'd6-positioning-onepager', 'd10-sig-watchlist', 'd10-pos-proof-map', 'd10-pos-pitch', 'd10-bc-map', 'd10-bc-warm-paths', 'd10-out-field-play', 'd1-exec-email', 'd1-deal-memo', 'd6-battlecard', 'd1-discovery-call', 'd7-msp', 'd10-out-sequence', 'd10-ev-meddpicc', 'd10-ev-dossier', 'd10-ev-mock', 'd10-out-artifact-gift', 'd10-cl-timing', 'd10-cl-negotiation', 'd10-cl-90day', 'd10-cap-offer', 'd2-funnel-decomp'],
+    },
+    {
+      id: 'stage-proof-from-shipped-work',
+      title: 'Proof from shipped work',
+      goal: 'Interview-grade write-ups of systems that already shipped: design and oversight docs, the judge write-up, a field report, a consulting scope.',
+      why: 'The Empire pipeline is real, shipped GTM engineering. Turning it into short, legible proof costs hours, not weeks, and every piece is an interview answer. Runs in parallel with the live pursuit.',
+      exit: 'A portfolio folder: design doc, oversight doc, judge write-up, field report and consulting scope, each 2 pages or less, each about something that shipped.',
+      subtaskIds: ['d9-tc-design-doc', 'd5-ov-gates', 'd5-ct-context', 'd5-prompt-craft', 'd5-eo-transcript-analysis', 'd5-eo-judge-validation', 'd3-pe-code-review', 'd3-sde-provenance', 'd5-ce-pipeline', 'd9-exec-brief', 'd9-tc-field-report', 'd6-narrative', 'd9-scqa-rewrite', 'd3-cap-3-consulting-sim', 'd1-wg-shadow-sessions', 'd1-wg-agent-brief'],
     },
     {
       id: 'stage-1-engineering-baseline',
-      title: 'Engineering baseline',
-      goal: 'Write, test, and review production code in TypeScript and Python; query data in SQL; control what a model sees.',
-      why: 'The largest gap against the benchmark role. Every later build is judged on production rigor, so this comes first.',
-      exit: 'One pipeline module rebuilt typed + tested behind a CI gate, and 5 PR reviews logged.',
-      subtaskIds: ['d3-pe-ts-service', 'd3-pe-python', 'd3-pe-code-review', 'd4-mode-sql', 'd5-prompt-craft', 'd5-ct-context'],
-    },
-    {
-      id: 'stage-2-ground-in-the-motion',
-      title: 'Ground in the revenue motion',
-      goal: 'Know the motions an agent will run — as practiced, with the metrics and baselines that define success.',
-      why: 'Agents encode workflows. You cannot design oversight or prove ROI for a motion you have not mapped and baselined.',
-      exit: 'Motion specs for inbound, outbound, and pipeline management, an ROI baseline, and an agent design brief.',
-      subtaskIds: ['d1-wg-shadow-sessions', 'd2-funnel-decomp', 'd4-metrics-dict', 'd1-deal-memo', 'd1-discovery-call', 'd2-am-motion-spec', 'd2-am-roi-model', 'd1-wg-agent-brief'],
-    },
-    {
-      id: 'stage-3-data-foundation',
-      title: 'Data foundation (rung 1)',
-      goal: 'A trustworthy, de-duplicated, provenance-stamped data layer agents can read from and write to safely.',
-      why: 'Agents amplify whatever data they touch, so a clean foundation comes before anything acts on it.',
-      exit: 'Capstone 1 — the signal pipeline live on a governed schema.',
-      subtaskIds: ['d3-sde-spine-scaffold', 'd3-stack-crm-model', 'd3-orch-webhook-schema', 'd3-orch-idempotency', 'd3-sde-identity', 'd3-sde-dedup', 'd3-sde-provenance', 'd4-dbt-model', 'd3-stack-eval', 'd3-cap-1-signal-pipeline'],
+      title: 'Engineering baseline, interview-scoped',
+      goal: 'Enough typed code, tests and SQL to hold a technical screen for a GTM-engineering role.',
+      why: 'Scoped down to what an interview tests. The full production-engineering depth waits until after the offer.',
+      exit: 'One pipeline module typed and tested behind a CI gate; SQL and metrics fluency demonstrated.',
+      subtaskIds: ['d3-pe-ts-service', 'd3-pe-python', 'd4-mode-sql', 'd4-metrics-dict'],
     },
     {
       id: 'stage-4-first-agent',
-      title: 'Build the agent, with oversight designed in',
-      goal: 'A standalone agent with well-designed tools and MCP access, plus a written oversight design for the motion it serves.',
-      why: 'The first build that acts. Oversight is designed alongside it, not bolted on after.',
-      exit: 'An Agent SDK agent + MCP server running one workflow, with an oversight design and a design doc sellers can read.',
-      subtaskIds: ['d5-ct-tool-design', 'd5-mcp-server', 'd5-agentic-system', 'd5-ov-gates', 'd5-sdk-agent', 'd9-tc-design-doc'],
+      title: 'Portfolio agent — GTM-engineer track only',
+      goal: 'A standalone agent with well-designed tools and MCP access, as a portfolio piece.',
+      why: 'Only if open processes lean GTM-engineering. If they are mostly AE/AD by week 4, give these weeks to the live pursuit instead.',
+      exit: 'An Agent SDK agent + MCP server running one workflow.',
+      subtaskIds: ['d5-ct-tool-design', 'd5-mcp-server', 'd5-agentic-system', 'd5-sdk-agent'],
+    },
+    {
+      id: 'stage-2-ground-in-the-motion',
+      title: 'After 1/1/27 — Ground in the revenue motion',
+      goal: 'Motion specs and ROI baselines for the motions an agent will run.',
+      why: 'Needs a team and a motion to baseline; the search does not supply one.',
+      exit: 'Motion specs and an ROI baseline.',
+      subtaskIds: ['d2-am-motion-spec', 'd2-am-roi-model'],
+    },
+    {
+      id: 'stage-3-data-foundation',
+      title: 'After 1/1/27 — Data foundation (rung 1)',
+      goal: 'A trustworthy, de-duplicated, provenance-stamped data layer agents can read from and write to safely.',
+      why: 'Net-new infrastructure; the Empire MI graph already covers the shipped half.',
+      exit: 'Capstone 1 — the signal graph live on a governed schema.',
+      subtaskIds: ['d3-sde-spine-scaffold', 'd3-stack-crm-model', 'd3-orch-webhook-schema', 'd3-orch-idempotency', 'd3-sde-identity', 'd3-sde-dedup', 'd4-dbt-model', 'd3-stack-eval', 'd3-cap-1-signal-pipeline'],
     },
     {
       id: 'stage-5-prove-it',
-      title: 'Prove it: evals + observability',
-      goal: 'Find real failures in transcripts, gate every change on a regression suite, trust the judge, and trace production behavior.',
-      why: 'An agent is not ready for customer-facing work until it is measured. This stage turns a demo into a system.',
-      exit: 'The D5 capstone set — eval harness + agentic system + MCP server — with tracing on and CI-gated evals.',
-      subtaskIds: ['d5-eo-transcript-analysis', 'd5-eval-harness', 'd5-eo-seeded-suite', 'd5-eo-judge-validation', 'd5-obs-tracing', 'd3-sp-skill-tests', 'd5-cap-build'],
+      title: 'After 1/1/27 — Prove it: evals + observability',
+      goal: 'Regression-gated evals and production tracing on an agent.',
+      why: 'Needs an agent in production to measure.',
+      exit: 'The D5 capstone set with tracing on and CI-gated evals.',
+      subtaskIds: ['d5-eval-harness', 'd5-eo-seeded-suite', 'd5-obs-tracing', 'd3-sp-skill-tests', 'd5-cap-build'],
     },
     {
       id: 'stage-6-model-and-explain',
-      title: 'Model and explain (rung 2)',
-      goal: 'Predictive scores that explain themselves, plus the experiment design to test whether acting on them works.',
-      why: 'Agents that suggest actions need reasons a seller will trust. Modeling follows once the data and the eval discipline exist.',
-      exit: 'An explainable fit/propensity score with reason codes, and the analytics mini-capstone shipped.',
-      subtaskIds: ['d3-sde-icp-attrs', 'd3-sde-score-model', 'd3-sde-explainable', 'd4-cohort', 'd4-exp-ab-design', 'd4-cap-build'],
+      title: 'After 1/1/27 — Model and explain (rung 2)',
+      goal: 'Cohorts and experiment design on real outcome data.',
+      why: 'Needs outcome data the search will not produce in 13 weeks.',
+      exit: 'The analytics mini-capstone shipped.',
+      subtaskIds: ['d4-cohort', 'd4-exp-ab-design', 'd4-cap-build'],
     },
     {
       id: 'stage-7-run-motions',
-      title: 'Run motions end to end (rung 3)',
+      title: 'After 1/1/27 — Run motions end to end (rung 3)',
       goal: 'Inbound, outbound, and pipeline management run by agents under governed access, with autonomy earned by evidence and ROI measured.',
       why: 'Everything before this is a prerequisite: data, agents, evals, tracing, and models come together here.',
       exit: 'The agent-run motion capstone and the outbound engine, each with an ROI readout and a causal read.',
-      subtaskIds: ['d3-sde-waterfall', 'd3-act-inbound', 'd3-act-outbound', 'd3-act-pipeline-agent', 'd3-sde-reverse-etl', 'd3-act-ads', 'd5-sdk-mcp-governed', 'd5-ov-autonomy-promotion', 'd5-obs-roi', 'd4-exp-causal', 'd5-ce-pipeline', 'd3-cap-2-outbound-engine', 'd5-cap-motion-build'],
+      subtaskIds: ['d3-sde-waterfall', 'd3-act-inbound', 'd3-act-outbound', 'd3-act-pipeline-agent', 'd3-sde-reverse-etl', 'd3-act-ads', 'd5-sdk-mcp-governed', 'd5-ov-autonomy-promotion', 'd5-obs-roi', 'd4-exp-causal', 'd3-cap-2-outbound-engine', 'd5-cap-motion-build'],
     },
     {
       id: 'stage-8-commercial-breadth',
-      title: 'Commercial breadth',
-      goal: 'The seller-side artifacts — enablement, capacity, rules of engagement, success planning, positioning — that make agent designs commercially credible.',
-      why: 'Mostly existing strength, so little new learning. It can run alongside stages 2–7 whenever a real deal or account supplies the material.',
+      title: 'After 1/1/27 — Commercial breadth',
+      goal: 'Capacity, rules of engagement, health scoring and the D1/D2/D6/D7 capstones.',
+      why: 'The job search now supplies the material: most of the commercial drills run inside Live Pursuit. What remains here is team-scale work.',
       exit: 'The D1, D2, D6, and D7 capstone sets shipped.',
-      subtaskIds: ['d1-exec-email', 'd2-capacity-model', 'd2-roe', 'd7-msp', 'd7-health', 'd7-winloss', 'd6-positioning-onepager', 'd6-battlecard', 'd6-narrative', 'd9-exec-brief', 'd9-scqa-rewrite', 'd1-cap-velocity-build', 'd2-cap-build', 'd6-cap-build', 'd7-cap-build'],
+      subtaskIds: ['d2-capacity-model', 'd2-roe', 'd7-health', 'd1-cap-velocity-build', 'd2-cap-build', 'd6-cap-build', 'd7-cap-build'],
     },
     {
       id: 'stage-9-platform-and-direction',
-      title: 'Shared platform and technical direction',
-      goal: 'Set the conventions others build on, turn field patterns into product insight, and practice technical direction at senior level.',
+      title: 'After 1/1/27 — Shared platform and technical direction',
+      goal: 'Set the conventions others build on and practice technical direction at senior level.',
       why: 'Senior-level scope only means something once there are shipped systems to generalize from.',
-      exit: 'A contributable shared repo, a published field report, and the writing capstone.',
-      subtaskIds: ['d3-sp-contrib-conventions', 'd9-tc-field-report', 'd8-staff-eng', 'd8-hard-things', 'd8-working-backwards', 'd3-cap-3-consulting-sim', 'd9-cap-build'],
+      exit: 'A contributable shared repo and the writing capstone.',
+      subtaskIds: ['d3-sp-contrib-conventions', 'd8-staff-eng', 'd8-hard-things', 'd8-working-backwards', 'd9-cap-build'],
     },
   ],
 }
