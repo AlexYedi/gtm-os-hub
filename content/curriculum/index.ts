@@ -21,6 +21,10 @@ import { livePursuit } from './live-pursuit'
 // added and sequenced first; gtm-os spine retired (YED-130), refs re-pointed to
 // the Empire pipeline; deal-shaped drills retargeted at live Tier-1 accounts;
 // stages that need net-new infrastructure deferred past 1/1/27.
+//
+// v4 (2026-10-11, GTM-27): interview readiness from the public hiring-side record
+// (hiring guides, interview banks, first-hand loops). D10 gains a proof-first
+// module and an Interview Rounds & Take-Homes section; add-only, new ids only.
 
 const RUBRIC_BUILD = [
   { level: 'novice' as const, descriptor: 'Followed a reference/tutorial; works on the happy path; little error handling.' },
@@ -829,7 +833,7 @@ export const curriculum: Curriculum = {
       goal: 'A written ICP, a scored Tier-1 list, a CRM pipeline, buying-committee maps and multi-threaded processes open at Tier-1 accounts, run through to a signed offer.',
       why: 'The offer deadline (2027-01-01) and 4–8 week hiring cycles mean the pipeline must be full by early November. Every commercial drill in the curriculum gets a live counterparty here.',
       exit: 'Tier-1 list scored with reasons, positioning one-pager done, multi-threaded processes open at Tier-1 accounts by week 6; closes on a signed offer.',
-      subtaskIds: ['d10-mm-icp', 'd10-mm-tiering', 'd10-mm-pipeline', 'd3-sde-icp-attrs', 'd3-sde-score-model', 'd3-sde-explainable', 'd6-positioning-onepager', 'd10-sig-watchlist', 'd10-pos-proof-map', 'd10-pos-pitch', 'd10-bc-map', 'd10-bc-warm-paths', 'd10-out-field-play', 'd1-exec-email', 'd1-deal-memo', 'd6-battlecard', 'd1-discovery-call', 'd7-msp', 'd10-out-sequence', 'd10-ev-meddpicc', 'd10-ev-dossier', 'd10-ev-mock', 'd10-out-artifact-gift', 'd10-cl-timing', 'd10-cl-negotiation', 'd10-cl-90day', 'd10-cap-offer', 'd2-funnel-decomp'],
+      subtaskIds: ['d10-mm-icp', 'd10-mm-tiering', 'd10-mm-pipeline', 'd3-sde-icp-attrs', 'd3-sde-score-model', 'd3-sde-explainable', 'd6-positioning-onepager', 'd10-sig-watchlist', 'd10-pos-proof-map', 'd10-pos-pitch', 'd10-pf-writeups', 'd10-pf-runbook', 'd10-pf-demo', 'd10-bc-map', 'd10-bc-warm-paths', 'd10-out-field-play', 'd1-exec-email', 'd1-deal-memo', 'd6-battlecard', 'd1-discovery-call', 'd7-msp', 'd10-out-sequence', 'd10-ev-meddpicc', 'd10-ev-dossier', 'd10-ev-mock', 'd10-rd-story-bank', 'd10-rd-behavioral', 'd10-rd-failure-path', 'd10-rd-frustrated-rep', 'd10-rd-case', 'd10-rd-portfolio-defense', 'd10-rd-commercial', 'd10-rd-reverse', 'd10-th-inbound-funnel', 'd10-th-outbound-reply', 'd10-th-campaign-60', 'd10-out-artifact-gift', 'd10-cl-timing', 'd10-cl-negotiation', 'd10-cl-90day', 'd10-cap-offer', 'd2-funnel-decomp'],
     },
     {
       id: 'stage-proof-from-shipped-work',
@@ -837,7 +841,7 @@ export const curriculum: Curriculum = {
       goal: 'Interview-grade write-ups of systems that already shipped: design and oversight docs, the judge write-up, a field report, a consulting scope.',
       why: 'The Empire pipeline is real, shipped GTM engineering. Turning it into short, legible proof costs hours, not weeks, and every piece is an interview answer. Runs in parallel with the live pursuit.',
       exit: 'A portfolio folder: design doc, oversight doc, judge write-up, field report and consulting scope, each 2 pages or less, each about something that shipped.',
-      subtaskIds: ['d9-tc-design-doc', 'd5-ov-gates', 'd5-ct-context', 'd5-prompt-craft', 'd5-eo-transcript-analysis', 'd5-eo-judge-validation', 'd3-pe-code-review', 'd3-sde-provenance', 'd5-ce-pipeline', 'd9-exec-brief', 'd9-tc-field-report', 'd6-narrative', 'd9-scqa-rewrite', 'd3-cap-3-consulting-sim', 'd1-wg-shadow-sessions', 'd1-wg-agent-brief'],
+      subtaskIds: ['d9-tc-design-doc', 'd5-ov-gates', 'd5-ct-context', 'd5-prompt-craft', 'd5-eo-transcript-analysis', 'd5-eo-judge-validation', 'd3-pe-code-review', 'd3-sde-provenance', 'd5-ce-pipeline', 'd9-exec-brief', 'd9-tc-field-report', 'd6-narrative', 'd9-scqa-rewrite', 'd3-cap-3-consulting-sim', 'd1-wg-shadow-sessions', 'd1-wg-agent-brief', 'd10-th-icp-agent-eval', 'd10-th-signal-precision'],
     },
     {
       id: 'stage-1-engineering-baseline',

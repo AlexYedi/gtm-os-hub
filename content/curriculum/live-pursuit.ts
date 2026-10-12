@@ -1,4 +1,4 @@
-import type { Area, RubricLevel } from './types'
+import type { Area, Resource, RubricLevel } from './types'
 
 // D10 — Live Pursuit (added 2026-09-29).
 // The job search run as a full-cycle enterprise pursuit: the product is me, the
@@ -13,6 +13,20 @@ const RUBRIC_PURSUIT: RubricLevel[] = [
   { level: 'practitioner', descriptor: 'Done on live accounts, logged in the pipeline, and it changed a next step (a meeting, an intro, a stage move).' },
   { level: 'expert', descriptor: 'Repeatable and measured against a baseline; could be handed to a rep as a play and defended in a sales-leadership interview.' },
 ]
+
+// Public hiring-side sources for the interview-readiness modules (v4, GTM-27).
+// URLs verified 2026-10-11.
+const RES: Record<string, Resource> = {
+  hireGuide: { title: 'How to hire a GTM Engineer (hiring guide with interview questions + three public take-homes) — The GTM Engineer', url: 'https://thegtme.com/p/how-to-hire-a-gtm-engineer', kind: 'article' },
+  breakIn: { title: 'The best GTM Engineering resources (and how to break in) — GTM Engineering Newsletter', url: 'https://newsletter.gtmengineering.ai/p/how-to-break-into-gtm-engineering', kind: 'article' },
+  prep: { title: 'GTM engineer interview prep — GTM Engineer Search', url: 'https://www.gtmengineersearch.com/gtm-engineer-interview-prep/', kind: 'article' },
+  behavioral: { title: 'Behavioral interview questions — GTM Engineer Search', url: 'https://www.gtmengineersearch.com/gtm-engineer-behavioral-interview-questions/', kind: 'article' },
+  technical: { title: 'Technical interview questions — GTM Engineer Search', url: 'https://www.gtmengineersearch.com/gtm-engineer-technical-interview-questions/', kind: 'article' },
+  caseStudy: { title: 'Case-study interview briefs — GTM Engineer Search', url: 'https://www.gtmengineersearch.com/gtm-engineer-case-study-interview/', kind: 'article' },
+  portfolioReview: { title: 'Portfolio-review interview questions — GTM Engineer Search', url: 'https://www.gtmengineersearch.com/gtm-engineer-portfolio-review-interview/', kind: 'article' },
+  portfolio: { title: 'The GTM engineer portfolio — GTM Engineer Search', url: 'https://www.gtmengineersearch.com/gtm-engineer-portfolio/', kind: 'article' },
+  reverse: { title: 'Questions to ask the employer — GTM Engineer Search', url: 'https://www.gtmengineersearch.com/gtm-engineer-questions-to-ask-employer/', kind: 'article' },
+}
 
 export const livePursuit: Area = {
   id: 'd10-live-pursuit',
@@ -54,6 +68,19 @@ export const livePursuit: Area = {
           subtasks: [
             { id: 'd10-pos-proof-map', title: 'Proof inventory: every artifact mapped to the metric it moves for a Tier-1 hiring manager, with the gaps named', kind: 'exercise', complexity: 2, rubric: RUBRIC_PURSUIT },
             { id: 'd10-pos-pitch', title: 'The 90-second pitch and the 2-minute "why me, why now, why you" tailored to one Tier-1 account, recorded and self-reviewed', kind: 'exercise', complexity: 2, rubric: RUBRIC_PURSUIT },
+          ],
+        },
+        {
+          id: 'd10-pf',
+          title: 'Proof that leads with the number',
+          summary: 'Write every system up so the business outcome comes first and the architecture comes last.',
+          body:
+            '## The most common rejection is a strong build told backwards\n\nHiring loops reject candidates whose work is technically excellent but narrated as architecture. The pattern behind the red flags (over-engineering, tunnel vision, "no commercial awareness", "talks about delivery but not adoption") is the same: the business decision the system served never made it into the story.\n\n## The unit of evidence is a system, not a skill\n\nFor each system: **situation** you walked into → **what you built** → **alternatives** you considered → **constraints** → **what happened afterwards, including where it fell short.** Open with the number: what it was before, what it was after, and how much of that delta you would defend as yours. Describe what you *decided*, not only what you built.\n\n## Progressive disclosure, strongest format first\n\n1. Something they can click.\n2. The diagram.\n3. The two-minute walkthrough (recorded).\n4. The written appendix.\n\nLength is itself the judgment test. And close the ownership gap: a system nobody else can run is a liability, so every write-up names who runs it now and what was left behind for them.',
+          resources: [RES.portfolio, RES.portfolioReview],
+          subtasks: [
+            { id: 'd10-pf-writeups', title: 'Three shipped systems written up in proof format (situation → build → alternatives → constraints → outcome and shortfall), each opening with the before/after number', kind: 'project', complexity: 3, rubric: RUBRIC_PURSUIT, prompt: 'Lead with the business number and the adoption story; architecture goes in the appendix. Name what you deliberately did not automate and who wanted it.' },
+            { id: 'd10-pf-runbook', title: 'One-page handoff runbook for one shipped system: owner, inputs, failure modes, how you find out it broke, who gets told, cost at 3× volume', kind: 'exercise', complexity: 2, rubric: RUBRIC_PURSUIT, prompt: 'Write it for the ops person who inherits the system, not for an engineer. If you cannot name an owner, that is the finding.' },
+            { id: 'd10-pf-demo', title: 'Recorded 2–5 minute demo of one system (problem, the click-through, the number), linked from the Hub', kind: 'exercise', complexity: 2, rubric: RUBRIC_PURSUIT, prompt: 'One take after two practice runs. Tool names only after the business problem is on screen.' },
           ],
         },
       ],
@@ -123,6 +150,46 @@ export const livePursuit: Area = {
             { id: 'd10-ev-meddpicc', title: 'MEDDPICC on every live process, updated after each conversation; gaps become the next call\'s questions', kind: 'exercise', complexity: 2, rubric: RUBRIC_PURSUIT },
             { id: 'd10-ev-dossier', title: 'Interview-prep dossier per process (company × role × stage × interviewer), reviewed before every call', kind: 'exercise', complexity: 2, rubric: RUBRIC_PURSUIT },
             { id: 'd10-ev-mock', title: 'Mock loop: a role-play or pitch exercise and a hiring-manager screen, recorded and self-reviewed', kind: 'exercise', complexity: 3, rubric: RUBRIC_PURSUIT },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'd10-rounds',
+      title: 'Interview Rounds & Take-Homes',
+      summary: 'Each round scores something specific. Drill each one against that, and practice the public take-homes under the clock.',
+      modules: [
+        {
+          id: 'd10-rd',
+          title: 'Round-by-round question bank',
+          summary: 'What each round type tests, the questions it uses, and the answer shape that scores.',
+          body:
+            '## What every round is scoring\n\nPublished hiring guides, interview banks and first-hand loop reports converge on seven dimensions:\n\n1. **Commercial bias**: every system tied to a revenue decision and a before/after number.\n2. **Diagnose before build**: reduce the problem, name the owner and the missing data, and refuse to automate a motion that has not earned the right to scale.\n3. **Failure paths**: inputs → sources → rules → *what fails* → what gets written back. These interviews poke the failure path harder than the happy path.\n4. **Adoption and handoff**: who runs it now, and what reps do differently.\n5. **Experimentation**: hypothesis, metric, test; what told you it worked in week one versus month three.\n6. **AI fluency, honestly scoped**: which parts a model wrote and what you changed afterwards.\n7. **Communication across levels**: the same system explained to an executive and to a frustrated rep, without naming a tool first.\n\n## The rounds\n\n- **Behavioral** (usually no AI). The hour goes into the second and third follow-ups, where they ask for the volumes. Core prompts: a bug you caught in a GTM system; the system you are proudest of and what was different for the business; a system built exactly as asked where the number did not move; what you argued against building; what happened after you handed it off.\n- **Technical scenario.** Talking through it, not live coding: a broken lead-routing flow with duplicates and angry reps; webhook versus polling; rate limits across enrichment sources; where a shared business rule should live; low-code chain versus fifty lines of code (and who maintains it).\n- **Case.** "Our reply rates dropped 30%, diagnose it." "Double pipeline in six months without adding headcount." "Here is a funnel with five noisy metrics; what do you inspect before building anything?" Strong answers name external levers (new data) *and* internal ones (routing delays).\n- **Portfolio defense.** Where does this system stop? Which join gives you the most trouble? What would go backwards if you switched it off tomorrow? What breaks first at ten times the volume? Who reviewed it before it went live?\n- **Commercial rounds** (the target roles). Mock discovery call, book-of-business review, QBR, renewal-risk save, forecast call. The bank for these is being extended by a dedicated research pass.\n- **Reverse questions.** Who owns the system after it ships? What is the role measured on? Does this function exist yet, or would I be defining it?\n\n## The answer shape\n\nSituation in one sentence → the number before → what you decided (and what you refused to build) → what happened, with the number after → what you would do differently. Under two minutes, then let them pull on a thread.',
+          resources: [RES.hireGuide, RES.prep, RES.behavioral, RES.technical, RES.reverse],
+          subtasks: [
+            { id: 'd10-rd-story-bank', title: 'Story bank: 8–10 stories keyed to the seven scoring dimensions, each with the before/after number, the share of the delta that is yours, and what you chose not to automate', kind: 'exercise', complexity: 3, rubric: RUBRIC_PURSUIT, prompt: 'Keep the stories themselves in the private prep workspace; this subtask tracks the skill. Every story must survive "what was the number, and how much of that is yours?"' },
+            { id: 'd10-rd-behavioral', title: 'Behavioral round drill: answer the five core prompts out loud, recorded, then take the second and third follow-ups (the volumes)', kind: 'exercise', complexity: 2, rubric: RUBRIC_PURSUIT },
+            { id: 'd10-rd-failure-path', title: 'Failure-path one-pagers for three systems (inputs, sources, rules, what fails, what gets written back), each explained in three minutes without naming a tool', kind: 'exercise', complexity: 2, rubric: RUBRIC_PURSUIT },
+            { id: 'd10-rd-frustrated-rep', title: 'Ten-minute discovery role-play with a frustrated rep: diagnose the workflow without jumping to tools, propose the smallest change, and say how you would know it was adopted', kind: 'exercise', complexity: 2, rubric: RUBRIC_PURSUIT, prompt: 'Have a model play the rep and score the transcript against the seven dimensions.' },
+            { id: 'd10-rd-case', title: 'Case round drill: two classic cases (a reply-rate drop, doubling pipeline without headcount) answered live in 20 minutes each, naming external and internal levers', kind: 'exercise', complexity: 3, rubric: RUBRIC_PURSUIT },
+            { id: 'd10-rd-portfolio-defense', title: 'Portfolio defense: take one shipped system through the twenty portfolio-review probes, and fix the write-up wherever an answer was weak', kind: 'exercise', complexity: 3, rubric: RUBRIC_PURSUIT },
+            { id: 'd10-rd-commercial', title: 'Commercial rounds: mock discovery call, book-of-business review, QBR and renewal-risk save, each recorded and self-scored', kind: 'exercise', complexity: 3, rubric: RUBRIC_PURSUIT, prompt: 'These are the rounds for the target roles. Use the systems work as the proof inside the answer, not as the answer.', ref: 'GTM-28' },
+            { id: 'd10-rd-reverse', title: 'Reverse-question set by round and interviewer type (recruiter, hiring manager, peer, executive), used in every live loop', kind: 'exercise', complexity: 1, rubric: RUBRIC_PURSUIT },
+          ],
+        },
+        {
+          id: 'd10-th',
+          title: 'Take-home drills',
+          summary: 'The public take-homes, timed, with the deliverable format they are graded on.',
+          body:
+            '## The take-home playbook\n\n1. **Diagnose above the brief first.** Check the ICP and targeting before optimizing the leak you were pointed at. The best-documented rejection in the public record was a strong technical build that stayed inside the brief while the real problem (wrong targeting) sat above it.\n2. **Ship a usable v1 fast.** "Proactive and faster" beats depth.\n3. **Reserve the last fifth of the time** for a write-up of what you deliberately left out and where the thing breaks.\n4. **Deliver it in the graded format:** a one-page executive summary, 3–5 recommendations, and 1–2 experiments.\n5. **Name both kinds of lever:** external (new data sources) and internal (routing delays, handoffs). Graders say this is what separates strong submissions.\n6. **Record the walkthrough.** Practise it, because candidates report the video takes the longest.\n\n## The drills\n\nThree archetypes are public: an inbound-funnel analysis (~60k leads, speed-to-lead and segment conversion), an outbound reply-rate analysis (~60k sends, segment and timing), and a 60-minute outbound campaign build from messy lists (dedupe, DQ history, signal-to-message). Two portfolio-grade case briefs double as proof: an inbound ICP agent with its eval set, and a public-signal detector scored for precision against a labelled sample.',
+          resources: [RES.hireGuide, RES.caseStudy, RES.breakIn],
+          subtasks: [
+            { id: 'd10-th-inbound-funnel', title: 'Timed drill: inbound-funnel analysis (speed-to-lead, segment conversion, routing) → one-page executive summary, 3–5 recommendations, 1–2 experiments, walkthrough ≤ 5 minutes', kind: 'project', complexity: 3, rubric: RUBRIC_PURSUIT, prompt: 'Use the public brief. If no dataset is available, generate a synthetic one with the same fields and say so in the write-up.' },
+            { id: 'd10-th-outbound-reply', title: 'Timed drill: outbound reply-rate analysis (segment, timing, sequence drop-off) in the same graded format', kind: 'project', complexity: 3, rubric: RUBRIC_PURSUIT },
+            { id: 'd10-th-campaign-60', title: '60-minute campaign build from messy lists: dedupe, reconcile disqualification history, map signals to messages, choose breadth versus depth', kind: 'exercise', complexity: 3, rubric: RUBRIC_PURSUIT, prompt: 'Hard stop at 60 minutes. Spend the first 10 on targeting: potential = list size × readiness to convert × value per conversion.' },
+            { id: 'd10-th-icp-agent-eval', title: 'Case brief: an agent that decides whether an inbound form fill fits the ICP, with a reason a rep can check, plus the eval set that measures it', kind: 'project', complexity: 4, rubric: RUBRIC_PURSUIT, prompt: 'Build it on existing pipeline data. It doubles as a proof write-up (d10-pf-writeups).' },
+            { id: 'd10-th-signal-precision', title: 'Case brief: detect three public signals across an account list and report the precision of each against a labelled sample', kind: 'project', complexity: 4, rubric: RUBRIC_PURSUIT, prompt: 'Reuse the signal pipeline; the new work is the labelled sample and the precision report.' },
           ],
         },
       ],
