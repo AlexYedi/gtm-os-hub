@@ -91,7 +91,7 @@ The Work, Live" intent — see §9.)
 ---
 
 ## 2. Stack
-**Installed now** (`package.json`): Next.js App Router (15.5 → **16 + Cache Components is a tracked upgrade**) · TypeScript · Vercel · Tailwind v4 (CSS-first `@theme`) · `@supabase/supabase-js` · `server-only` · `posthog-js` (public-page pageview analytics, PII-safe + env-gated — see `instrumentation-client.ts`). Package manager: bun. Standalone repo deployed to Vercel.
+**Installed now** (`package.json`): Next.js App Router (16.2; Turbopack default; `cacheComponents` not enabled — route-segment `revalidate` retained) · TypeScript · Vercel · Tailwind v4 (CSS-first `@theme`) · `@supabase/supabase-js` · `server-only` · `posthog-js` (public-page pageview analytics, PII-safe + env-gated — see `instrumentation-client.ts`). Package manager: bun. Standalone repo deployed to Vercel.
 **Planned, NOT yet installed** (do not assume these are present): shadcn/ui (cockpit build-out) · recharts (charts) · Framer **Motion** (animation — Framer-Motion, not Framer-the-builder). Add them when the cockpit/System-Map build actually needs them.
 
 ---

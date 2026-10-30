@@ -33,7 +33,8 @@ Full design lives in **`ARCHITECTURE.md` — start with §0, the PII contract.**
    gated step — verify real-data egress locally first, then a protected preview, then public.
 
 ### Stack
-Next.js App Router (15.5; Next 16 + Cache Components is a tracked upgrade) · TypeScript ·
+Next.js App Router (16.2; Turbopack default for dev+build; `cacheComponents` not enabled —
+the route-segment `revalidate` model is retained) · TypeScript ·
 Tailwind v4 (CSS-first `@theme`) · `@supabase/supabase-js` · `posthog-js` (public-page pageview
 analytics — see below) · bun · Vercel. `lib/sources/*` are the source adapters — each returns
 PII-safe `Public*` types. **Not yet installed (planned):** recharts (charts), Framer Motion
