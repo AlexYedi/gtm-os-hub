@@ -1,0 +1,6 @@
+# gtm-os-hub repo policy (auto-detected from GitHub settings)
+defaultBranch: main
+merge:
+  method: squash   # squash, merge, and rebase all allowed; squash chosen as default
+  deleteBranchOnMerge: true
+requireHumanMerge: true   # setup PR is a human review gate
