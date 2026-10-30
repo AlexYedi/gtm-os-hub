@@ -3,6 +3,16 @@ import Link from 'next/link'
 import { isCockpitAuthed } from '@/lib/auth'
 import { getCockpitBoard, type CockpitIssue } from '@/lib/sources/cockpit-linear'
 import { getCockpitTopicIntelHealth } from '@/lib/sources/topic-intel-health'
+import { getPublicEvalRunPanel } from '@/lib/sources/eval-runs'
+import { getPublicFunnelPanel } from '@/lib/sources/funnel'
+import { getPublicSignalPrecisionPanel } from '@/lib/sources/signal-precision'
+import { getPublicRunHealthPanel } from '@/lib/sources/run-health'
+import {
+  EvalRunPanel,
+  FunnelPanel,
+  SignalPrecisionPanel,
+  RunHealthPanel,
+} from '@/components/cockpit/InstrumentPanels'
 import { TopicIntelHealthStrip } from '@/components/cockpit/TopicIntelHealthStrip'
 
 import { formatDate } from '@/lib/format'
@@ -26,6 +36,15 @@ export default async function Cockpit() {
   const board = await getCockpitBoard()
   const health = await getCockpitTopicIntelHealth()
 
+  // V2 instruments (G-02): each adapter degrades to honest-empty on its own — no panel's
+  // failure can take down the page or the others.
+  const [evalRuns, funnel, signalPrecision, runHealth] = await Promise.all([
+    getPublicEvalRunPanel(),
+    getPublicFunnelPanel(),
+    getPublicSignalPrecisionPanel(),
+    getPublicRunHealthPanel(),
+  ])
+
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
       <header className="mb-8">
@@ -46,6 +65,17 @@ export default async function Cockpit() {
       </header>
 
       <TopicIntelHealthStrip tripwires={health} />
+
+      {/* V2 instruments (G-02) — private until each panel's data provenance is proven PII-free. */}
+      <section className="mt-8 space-y-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+          V2 instruments
+        </h2>
+        <EvalRunPanel panel={evalRuns} />
+        <FunnelPanel stages={funnel} />
+        <SignalPrecisionPanel rows={signalPrecision} />
+        <RunHealthPanel rows={runHealth} />
+      </section>
 
       {board === null ? (
         <div className="rounded-lg border border-pending bg-paper p-4 text-sm">

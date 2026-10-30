@@ -139,6 +139,24 @@ function latestAsOf(rows: Array<{ as_of_date?: string | null }>): string | null 
 }
 
 /**
+ * Snapshot filter (YED-249): the nightly compute APPENDS a snapshot per day, so the views return
+ * one row per theme per day. Keep only the rows whose as_of_date equals the latest date, so a
+ * theme renders once, not once per snapshot. Undated rows survive only when the view has NO dated
+ * rows at all (a null-dated view keeps all its rows); once a dated snapshot exists, undated rows
+ * are stale residue and are dropped.
+ *
+ * Done client-side (post-fetch) rather than with an `.eq('as_of_date', …)` round trip: one query
+ * per view instead of two sequential ones (max-date lookup + filtered read), no race if the
+ * nightly lands between those two queries, and the filter stays a pure, fixture-testable function.
+ * The fetch is already ordered and route-cached, so the extra rows are cheap.
+ */
+export function keepLatestAsOf<T extends { as_of_date?: string | null }>(rows: T[]): T[] {
+  const latest = latestAsOf(rows)
+  if (!latest) return rows
+  return rows.filter((r) => r.as_of_date === latest)
+}
+
+/**
  * Fetch the public topic-intelligence payload. Without a spine read path (no env, or `signal_read`
  * not yet in exposed schemas → the query errors/returns nothing) returns EMPTY_TOPIC_INTEL → the
  * surface renders INSTRUMENTING. Any error on either view degrades the WHOLE payload to empty rather
@@ -180,8 +198,8 @@ export async function getPublicTopicIntelligence(): Promise<PublicTopicIntellige
       return EMPTY_TOPIC_INTEL
     }
 
-    const ixRows = ix.data as IntersectionRow[]
-    const mvRows = mv.data as MovementRow[]
+    const ixRows = keepLatestAsOf(ix.data as IntersectionRow[])
+    const mvRows = keepLatestAsOf(mv.data as MovementRow[])
 
     const out: PublicTopicIntelligence = {
       intersections: ixRows.map(mapIntersection),
