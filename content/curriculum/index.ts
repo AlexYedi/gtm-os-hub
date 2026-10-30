@@ -484,6 +484,9 @@ export const curriculum: Curriculum = {
               id: 'd5-llm',
               title: 'LLM fundamentals + prompt engineering',
               resources: [R.anthropicCourses, R.huyen],
+              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              body:
+                '## The fundamentals that change the engineering\n\nWorking fluency means knowing what varies at runtime: context windows and their effective limits, token economics, temperature and sampling, and why the same prompt returns different outputs on different runs. Prompt craft builds on that base — system prompts that set role and boundaries, few-shot examples that teach format by demonstration, chain-of-thought for multi-step reasoning, and prompt chaining that decomposes one fragile mega-prompt into steps you can inspect and fix individually.\n\n## What you are building\n\nA prompt library for one recurring GTM task: a system prompt, a few-shot set, and a chained variant — each version logged with what changed and what it fixed, so the craft is observable instead of folklore.',
               subtasks: [
                 { id: 'd5-prompt-craft', title: 'Prompt craft (system prompts, few-shot, CoT, prompt chaining)', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD },
               ],
@@ -499,6 +502,9 @@ export const curriculum: Curriculum = {
               id: 'd5-ct',
               title: 'Context engineering + tool design',
               resources: [R.contextEng, R.toolsWriting, R.codeExecMcp],
+              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              body:
+                '## The two levers of agent quality\n\nMost agent quality is decided before the model is chosen: what enters the context window, and what tools the agent can call. Context engineering is curation under a budget — what the task needs now, compaction when history outgrows the window, just-in-time retrieval instead of front-loading everything. Tool design is interface writing: fewer, well-described tools with clear inputs and outputs beat a sprawling menu, because the description is the only documentation the model ever reads.\n\n## What you are building\n\nA context-engineering pass on one existing agent, and a redesign of its tool set measured before/after on a fixed set of test cases — the measurement, not the vibe, decides whether the redesign worked.',
               subtasks: [
                 { id: 'd5-ct-context', title: 'Context-engineering pass on one existing agent (what enters the window, compaction, just-in-time retrieval)', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD },
                 { id: 'd5-ct-tool-design', title: "Redesign one agent's tool set per tool-design guidance; measure before/after on 10 fixed test cases", kind: 'project', complexity: 3, rubric: RUBRIC_BUILD },
@@ -514,6 +520,9 @@ export const curriculum: Curriculum = {
               id: 'd5-agents',
               title: 'Agents, tool use, MCP, and evaluation',
               resources: [R.agentsBuilding, R.multiAgent, R.mcpIntro, R.hamelEvals],
+              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              body:
+                '## Agents are loops, and loops need evals\n\nThe canonical agent pattern is simple: an LLM in a loop with tools, deciding each step until done. Everything hard lives in the discipline around the loop — tool contracts served over MCP so the same server works for any client, and an eval harness (golden examples, an LLM-as-judge, a regression log) so a prompt or tool change cannot silently break what worked yesterday. Build the harness before the agent gets good, not after.\n\n## What you are building\n\nThree portfolio artifacts on a non-pipeline target: an eval harness, one MCP server over a real data source, and a small agentic system (single LLM, a handful of tools, one eval suite) — the same set the capstone collects into a portfolio.',
               subtasks: [
                 { id: 'd5-eval-harness', title: 'Eval harness (10 golden examples + LLM-as-judge + regression log)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD, prompt: 'Against a non-pipeline artifact; the Empire pipeline deliberately runs without a harness (complexity reset 2026-09-28).' },
                 { id: 'd5-mcp-server', title: 'Ship one MCP server (reads a Notion DB or a Supabase view)', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD },
@@ -618,6 +627,9 @@ export const curriculum: Curriculum = {
             {
               id: 'd5-cap',
               title: 'AI/Agent capstone',
+              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              body:
+                '## What the capstone assembles\n\nThe portfolio set is the integration test for D5: the eval harness proves the quality discipline, the agentic system proves the architecture, and the MCP server proves the interface. Shipped together they demonstrate the full loop — build, measure, expose — rather than any single skill.\n\n## What you are building\n\nThe three artifacts finished, linked, and consistent with each other: the same conventions across all three, the same eval discipline, and a short read-me that explains how the pieces fit. The set is what a portfolio review reads first.',
               subtasks: [
                 { id: 'd5-cap-build', title: 'Eval harness + agentic system + MCP server, shipped as a portfolio set', kind: 'capstone', complexity: 5, isCapstone: true, rubric: RUBRIC_BUILD },
               ],
@@ -626,6 +638,9 @@ export const curriculum: Curriculum = {
               id: 'd5-cap-motion',
               title: 'Agent-run motion capstone',
               summary: 'v2: the integrated proof — one revenue motion run end to end by an agent, with every production discipline attached.',
+              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              body:
+                '## What the capstone assembles\n\nThe agent-run motion is D5 end to end: one revenue motion from first signal to drafted, human-reviewed action, with every production discipline attached — the oversight design, a seeded eval suite gating changes, governed MCP access, production tracing, and an ROI readout against the D2 baseline. It is judged on the disciplines being present and defensible, not on the motion being large.\n\n## What you are building\n\nA runbook plus the evidence: the oversight doc, the eval suite, the access policy, the traces, and one weekly readout — the packet another engineer would need to run the motion without you.',
               subtasks: [
                 { id: 'd5-cap-motion-build', title: 'One GTM motion run end to end by an agent: first signal → drafted, human-reviewed action, with oversight design, seeded eval suite, governed MCP access, production tracing, and an ROI readout', kind: 'capstone', complexity: 5, isCapstone: true, rubric: RUBRIC_BUILD },
               ],
