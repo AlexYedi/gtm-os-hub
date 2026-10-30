@@ -168,6 +168,9 @@ export const curriculum: Curriculum = {
             {
               id: 'd2-bowtie',
               title: 'Bowtie funnel & diagnostics',
+              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              body:
+                '## The funnel has a back end\n\nThe bowtie extends the classic funnel past closed-won: marketing and sales on the left, customer marketing and customer success on the right, with expansion as a stage that has its own conversion, velocity, and slippage. Diagnosing a pipeline problem means decomposing stage by stage against a do-nothing baseline — which stage leaked, how much time each stage took, which single conversion move would have changed the outcome — instead of arguing about the aggregate number.\n\n## What you are building\n\nA decomposition retrospective on one closed process: the stage table, where the time actually went, the highest-leverage conversion gap, and what the do-nothing baseline would have predicted. The same diagnostic shape then applies to any funnel you inherit.',
               subtasks: [
                 { id: 'd2-funnel-decomp', title: 'Funnel decomposition retrospective on one closed deal', kind: 'exercise', complexity: 3, rubric: RUBRIC_BUILD, prompt: 'Decompose the job-search pipeline: stage conversion, velocity and slippage, against the do-nothing baseline.' },
               ],
@@ -182,6 +185,9 @@ export const curriculum: Curriculum = {
             {
               id: 'd2-capacity',
               title: 'Capacity & operating-rhythm modeling',
+              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              body:
+                '## Capacity is arithmetic plus assumptions\n\nA capacity model derives headcount from the plan: the revenue target, realistic per-rep productivity (ramped, not magical), expected attrition, and the lead time hiring actually needs. The model earns trust only through its stress test — which assumption breaks first if win rate halves or ramp time doubles, and what the plan does about it. Rules of engagement belong in the same breath: segment boundaries, who owns overlap accounts, and when a deal changes hands, drawn before two reps discover the conflict at the same time.\n\n## What you are building\n\nA stress-tested capacity model for a 20-AE team hitting $40M new ARR, plus a rules-of-engagement document that draws the Commercial/Enterprise boundary and states who works which overlap accounts.',
               subtasks: [
                 { id: 'd2-capacity-model', title: 'Capacity model for a 20-AE team hitting $40M new ARR (stress-tested)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD },
                 { id: 'd2-roe', title: 'Rules-of-engagement doc (Commercial ≤500 vs Enterprise >500)', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD },
@@ -213,6 +219,9 @@ export const curriculum: Curriculum = {
             {
               id: 'd2-cap',
               title: 'Operating-rhythm proposal for a Series B AI-native',
+              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              body:
+                '## What the capstone assembles\n\nAn operating rhythm is the cadence that runs the GTM system: forecast calls that inspect the pipeline rather than recount it, pipeline councils that unblock deals, QBRs that re-baseline the plan, and variance reviews that feed what was learned back into the model. The proposal is judged on whether each cadence answers a named question with a named owner — not on ceremony count.\n\n## What you are building\n\nA one-page operating-rhythm proposal for a Series B AI-native company: each cadence, its interval, its owner, the question it answers, and the metric it inspects — tight enough that a first-time revenue leader could run the week from it.',
               subtasks: [
                 { id: 'd2-cap-build', title: 'One-page operating rhythm proposal (forecast calls, pipeline councils, QBRs, variance reviews)', kind: 'capstone', complexity: 4, isCapstone: true, rubric: RUBRIC_BUILD },
               ],
