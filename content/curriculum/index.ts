@@ -93,6 +93,9 @@ export const curriculum: Curriculum = {
               id: 'd1-deal-frameworks',
               title: 'Qualification frameworks as inspection tools',
               summary: 'MEDDPICC, Command of the Message, Winning by Design (SPICED).',
+              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              body:
+                '## Frameworks are inspection tools, not paperwork\n\nMEDDPICC and SPICED earn their keep only as instruments for finding deal risk: what you do not know yet (metrics, economic buyer, decision criteria and process, paper process), what you cannot yet quote (pain, champion, competition), and what the buyer said in what order (situation, pain, impact, event, decision). Filling the acronyms in after the fact is theater — the framework scores what is missing, not what you hope is true.\n\n## What you are building\n\nA deal strategy memo on a Tier-1 target: MEDDPICC applied to a real buying process (in this curriculum, the hiring process), the buying committee mapped with threads and gaps named, and a multi-thread plan that closes the weakest thread first. The discovery call is then self-reviewed against SPICED — the framework scores the call, not the caller.',
               subtasks: [
                 { id: 'd1-deal-memo', title: 'Deal strategy memo (MEDDPICC + SPICED, multi-thread org map)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD, prompt: 'Deal strategy memo on a Tier-1 target company: MEDDPICC on the hiring process, buying committee mapped, multi-thread plan.' },
                 { id: 'd1-discovery-call', title: 'Mock discovery call + self-review vs SPICED', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD, prompt: 'Run a real first-round interview as discovery; self-review the recording against SPICED.' },
@@ -108,6 +111,9 @@ export const curriculum: Curriculum = {
             {
               id: 'd1-value',
               title: 'Value-based selling',
+              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              body:
+                '## Value, quantified\n\nAn executive buys a quantified outcome, not a product: the value hypothesis names the metric that moves, the baseline it moves from, and the causal mechanism connecting what you sell to the movement. If the mechanism does not fit in one sentence, there is no value hypothesis — only a feature list. Negotiation then trades on the same discipline: label the counterpart stake, name the tension in their terms, and make the ask small and specific enough to say yes to.\n\n## What you are building\n\nAn exec-sponsor email to a CRO/VP Sales built from public signals only, in three parts: the signal observed, the offer tied to the value hypothesis it implies, and a small, specific ask. The constraint is the discipline — everything inferable from the outside, nothing asserted about the inside.',
               subtasks: [
                 { id: 'd1-exec-email', title: 'Exec-sponsor email to a CRO using only public signals', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD, prompt: 'To the CRO/VP Sales at a Tier-1 target, public signals only, three parts: the signal, the offer, a small ask.' },
               ],
@@ -141,6 +147,9 @@ export const curriculum: Curriculum = {
               id: 'd1-cap-velocity',
               title: 'Sales-velocity / enablement system',
               summary: 'ELEVATION: deal acceleration + collateral lifecycle + rep enablement, designed as a system.',
+              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              body:
+                '## What the capstone assembles\n\nA sales-velocity system is the integration test for D1. The velocity model names its levers — opportunity count, win rate, deal size, cycle length — and the system answers each one: acceleration plays keyed to the stalls they unblock, a collateral lifecycle that produces, reviews, and retires content, and an enablement loop that takes a new seller to fluency. It is judged on coherence — each part feeding the others — not on any single artifact.\n\n## What you are building\n\nA design document written the way it would be pitched: the velocity model with its four levers and current assumptions, the acceleration plays mapped to the stalls they answer, and the enablement loop — designed end to end before anything is built.',
               subtasks: [
                 { id: 'd1-cap-velocity-build', title: 'Design a sales-velocity system (deal acceleration + enablement)', kind: 'capstone', complexity: 5, isCapstone: true, rubric: RUBRIC_BUILD },
               ],
