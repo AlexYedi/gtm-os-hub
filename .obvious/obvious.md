@@ -12,7 +12,7 @@ over external APIs.
 4. Projection layer, not a source of truth — read sources, don't mirror them.
 
 ## Stack
-- Next.js 15.5 (App Router) · TypeScript · Tailwind v4 (CSS-first `@theme`)
+- Next.js 16 (App Router; Turbopack default; `cacheComponents` not enabled) · TypeScript · Tailwind v4 (CSS-first `@theme`)
 - `@supabase/supabase-js` · `posthog-js` (env-gated, pageviews only)
 - Package manager / runtime: **bun** (bun 1.3.x; Node 20 present)
 
