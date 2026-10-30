@@ -64,3 +64,8 @@ Docker/Compose in the repo.
   permission denied on rm). Fix: `sudo rm -rf node_modules && bun install`.
 - The repo is destined to go public — keep it free of secrets and confidential references; audit
   egress before flipping public.
+
+## Work queue and rules
+
+- **Rules:** `AGENTS.md`, plus the `gtm-hub-guardrails` skill (its invariants load on every turn).
+- **Specs:** `docs/specs/gtm/` (G-01, G-02, G-03). The cross-repo index is in `AlexYedi/Empire_State_Events_Pipeline_Take_3`, `docs/specs/README.md`.
