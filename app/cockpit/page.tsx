@@ -2,6 +2,9 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { isCockpitAuthed } from '@/lib/auth'
 import { getCockpitBoard, type CockpitIssue } from '@/lib/sources/cockpit-linear'
+import { getCockpitTopicIntelHealth } from '@/lib/sources/topic-intel-health'
+import { TopicIntelHealthStrip } from '@/components/cockpit/TopicIntelHealthStrip'
+
 import { formatDate } from '@/lib/format'
 
 // Private, uncached (mirrors app/cockpit/university). Never cached, never public.
@@ -21,6 +24,7 @@ export default async function Cockpit() {
   if (!(await isCockpitAuthed())) redirect('/cockpit/login')
 
   const board = await getCockpitBoard()
+  const health = await getCockpitTopicIntelHealth()
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
@@ -40,6 +44,8 @@ export default async function Cockpit() {
           </Link>
         </nav>
       </header>
+
+      <TopicIntelHealthStrip tripwires={health} />
 
       {board === null ? (
         <div className="rounded-lg border border-pending bg-paper p-4 text-sm">
