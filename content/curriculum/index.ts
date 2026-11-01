@@ -93,9 +93,9 @@ export const curriculum: Curriculum = {
               id: 'd1-deal-frameworks',
               title: 'Qualification frameworks as inspection tools',
               summary: 'MEDDPICC, Command of the Message, Winning by Design (SPICED).',
-              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              // G-03 (GTM-10) — voice-reviewed by Alex, 2026-11-01.
               body:
-                '## Frameworks are inspection tools, not paperwork\n\nMEDDPICC and SPICED earn their keep only as instruments for finding deal risk: what you do not know yet (metrics, economic buyer, decision criteria and process, paper process), what you cannot yet quote (pain, champion, competition), and what the buyer said in what order (situation, pain, impact, event, decision). Filling the acronyms in after the fact is theater — the framework scores what is missing, not what you hope is true.\n\n## What you are building\n\nA deal strategy memo on a Tier-1 target: MEDDPICC applied to a real buying process (in this curriculum, the hiring process), the buying committee mapped with threads and gaps named, and a multi-thread plan that closes the weakest thread first. The discovery call is then self-reviewed against SPICED — the framework scores the call, not the caller.',
+                '## Frameworks are inspection tools, not paperwork\n\nMEDDPICC and SPICED earn their keep only as instruments for finding deal risk: what you do not know yet (metrics, economic buyer, decision criteria and process, paper process), what you cannot yet quote (pain, champion, competition), and what the buyer said in what order (situation, pain, impact, event, decision). Filling the acronyms in after the fact is theater; the framework exists to score what is still missing.\n\n## What you are building\n\nA deal strategy memo on a Tier-1 target: MEDDPICC applied to a real buying process (in this curriculum, the hiring process), the buying committee mapped with threads and gaps named, and a multi-thread plan that closes the weakest thread first. The discovery call is then self-reviewed against SPICED, scoring the call itself.',
               subtasks: [
                 { id: 'd1-deal-memo', title: 'Deal strategy memo (MEDDPICC + SPICED, multi-thread org map)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD, prompt: 'Deal strategy memo on a Tier-1 target company: MEDDPICC on the hiring process, buying committee mapped, multi-thread plan.' },
                 { id: 'd1-discovery-call', title: 'Mock discovery call + self-review vs SPICED', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD, prompt: 'Run a real first-round interview as discovery; self-review the recording against SPICED.' },
@@ -111,9 +111,9 @@ export const curriculum: Curriculum = {
             {
               id: 'd1-value',
               title: 'Value-based selling',
-              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              // G-03 (GTM-10) — voice-reviewed by Alex, 2026-11-01.
               body:
-                '## Value, quantified\n\nAn executive buys a quantified outcome, not a product: the value hypothesis names the metric that moves, the baseline it moves from, and the causal mechanism connecting what you sell to the movement. If the mechanism does not fit in one sentence, there is no value hypothesis — only a feature list. Negotiation then trades on the same discipline: label the counterpart stake, name the tension in their terms, and make the ask small and specific enough to say yes to.\n\n## What you are building\n\nAn exec-sponsor email to a CRO/VP Sales built from public signals only, in three parts: the signal observed, the offer tied to the value hypothesis it implies, and a small, specific ask. The constraint is the discipline — everything inferable from the outside, nothing asserted about the inside.',
+                '## Value, quantified\n\nAn executive buys a quantified outcome, not a product: the value hypothesis names the metric that moves, the baseline it moves from, and the causal mechanism connecting what you sell to the movement. If the mechanism does not fit in one sentence, there is no value hypothesis — only a feature list. Negotiation then trades on the same discipline: name what the counterpart has at stake, state the tension in their terms, and make the ask small and specific enough to say yes to.\n\n## What you are building\n\nAn exec-sponsor email to a CRO/VP Sales built from public signals only, in three parts: the signal observed, the offer tied to the value hypothesis it implies, and a small, specific ask. The constraint is the discipline — everything inferable from the outside, nothing asserted about the inside.',
               subtasks: [
                 { id: 'd1-exec-email', title: 'Exec-sponsor email to a CRO using only public signals', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD, prompt: 'To the CRO/VP Sales at a Tier-1 target, public signals only, three parts: the signal, the offer, a small ask.' },
               ],
@@ -147,9 +147,9 @@ export const curriculum: Curriculum = {
               id: 'd1-cap-velocity',
               title: 'Sales-velocity / enablement system',
               summary: 'ELEVATION: deal acceleration + collateral lifecycle + rep enablement, designed as a system.',
-              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              // G-03 (GTM-10) — voice-reviewed by Alex, 2026-11-01.
               body:
-                '## What the capstone assembles\n\nA sales-velocity system is the integration test for D1. The velocity model names its levers — opportunity count, win rate, deal size, cycle length — and the system answers each one: acceleration plays keyed to the stalls they unblock, a collateral lifecycle that produces, reviews, and retires content, and an enablement loop that takes a new seller to fluency. It is judged on coherence — each part feeding the others — not on any single artifact.\n\n## What you are building\n\nA design document written the way it would be pitched: the velocity model with its four levers and current assumptions, the acceleration plays mapped to the stalls they answer, and the enablement loop — designed end to end before anything is built.',
+                '## What the capstone assembles\n\nA sales-velocity system is where every D1 lesson has to work at once. The velocity model names its levers — opportunity count, win rate, deal size, cycle length — and the system answers each one: acceleration plays keyed to the stalls they unblock, a collateral lifecycle that produces, reviews, and retires content, and an enablement loop that takes a new seller to fluency. It is judged on coherence: whether each part feeds the others.\n\n## What you are building\n\nA design document written the way it would be pitched: the velocity model with its four levers and current assumptions, the acceleration plays mapped to the stalls they answer, and the enablement loop — designed end to end before anything is built.',
               subtasks: [
                 { id: 'd1-cap-velocity-build', title: 'Design a sales-velocity system (deal acceleration + enablement)', kind: 'capstone', complexity: 5, isCapstone: true, rubric: RUBRIC_BUILD },
               ],
@@ -177,7 +177,7 @@ export const curriculum: Curriculum = {
             {
               id: 'd2-bowtie',
               title: 'Bowtie funnel & diagnostics',
-              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              // G-03 (GTM-10) — voice-reviewed by Alex, 2026-11-01.
               body:
                 '## The funnel has a back end\n\nThe bowtie extends the classic funnel past closed-won: marketing and sales on the left, customer marketing and customer success on the right, with expansion as a stage that has its own conversion, velocity, and slippage. Diagnosing a pipeline problem means decomposing stage by stage against a do-nothing baseline — which stage leaked, how much time each stage took, which single conversion move would have changed the outcome — instead of arguing about the aggregate number.\n\n## What you are building\n\nA decomposition retrospective on one closed process: the stage table, where the time actually went, the highest-leverage conversion gap, and what the do-nothing baseline would have predicted. The same diagnostic shape then applies to any funnel you inherit.',
               subtasks: [
@@ -194,7 +194,7 @@ export const curriculum: Curriculum = {
             {
               id: 'd2-capacity',
               title: 'Capacity & operating-rhythm modeling',
-              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              // G-03 (GTM-10) — voice-reviewed by Alex, 2026-11-01.
               body:
                 '## Capacity is arithmetic plus assumptions\n\nA capacity model derives headcount from the plan: the revenue target, realistic per-rep productivity (ramped, not magical), expected attrition, and the lead time hiring actually needs. The model earns trust only through its stress test — which assumption breaks first if win rate halves or ramp time doubles, and what the plan does about it. Rules of engagement belong in the same breath: segment boundaries, who owns overlap accounts, and when a deal changes hands, drawn before two reps discover the conflict at the same time.\n\n## What you are building\n\nA stress-tested capacity model for a 20-AE team hitting $40M new ARR, plus a rules-of-engagement document that draws the Commercial/Enterprise boundary and states who works which overlap accounts.',
               subtasks: [
@@ -228,9 +228,9 @@ export const curriculum: Curriculum = {
             {
               id: 'd2-cap',
               title: 'Operating-rhythm proposal for a Series B AI-native',
-              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              // G-03 (GTM-10) — voice-reviewed by Alex, 2026-11-01.
               body:
-                '## What the capstone assembles\n\nAn operating rhythm is the cadence that runs the GTM system: forecast calls that inspect the pipeline rather than recount it, pipeline councils that unblock deals, QBRs that re-baseline the plan, and variance reviews that feed what was learned back into the model. The proposal is judged on whether each cadence answers a named question with a named owner — not on ceremony count.\n\n## What you are building\n\nA one-page operating-rhythm proposal for a Series B AI-native company: each cadence, its interval, its owner, the question it answers, and the metric it inspects — tight enough that a first-time revenue leader could run the week from it.',
+                '## What the capstone assembles\n\nAn operating rhythm is the cadence that runs the GTM system: forecast calls that inspect the pipeline rather than recount it, pipeline councils that unblock deals, QBRs that re-baseline the plan, and variance reviews that feed what was learned back into the model. The proposal is judged on whether each cadence answers a named question with a named owner.\n\n## What you are building\n\nA one-page operating-rhythm proposal for a Series B AI-native company: each cadence, its interval, its owner, the question it answers, and the metric it inspects — tight enough that a first-time revenue leader could run the week from it.',
               subtasks: [
                 { id: 'd2-cap-build', title: 'One-page operating rhythm proposal (forecast calls, pipeline councils, QBRs, variance reviews)', kind: 'capstone', complexity: 4, isCapstone: true, rubric: RUBRIC_BUILD },
               ],
@@ -502,7 +502,7 @@ export const curriculum: Curriculum = {
               id: 'd5-llm',
               title: 'LLM fundamentals + prompt engineering',
               resources: [R.anthropicCourses, R.huyen],
-              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              // G-03 (GTM-10) — voice-reviewed by Alex, 2026-11-01.
               body:
                 '## The fundamentals that change the engineering\n\nWorking fluency means knowing what varies at runtime: context windows and their effective limits, token economics, temperature and sampling, and why the same prompt returns different outputs on different runs. Prompt craft builds on that base — system prompts that set role and boundaries, few-shot examples that teach format by demonstration, chain-of-thought for multi-step reasoning, and prompt chaining that decomposes one fragile mega-prompt into steps you can inspect and fix individually.\n\n## What you are building\n\nA prompt library for one recurring GTM task: a system prompt, a few-shot set, and a chained variant — each version logged with what changed and what it fixed, so the craft is observable instead of folklore.',
               subtasks: [
@@ -520,9 +520,9 @@ export const curriculum: Curriculum = {
               id: 'd5-ct',
               title: 'Context engineering + tool design',
               resources: [R.contextEng, R.toolsWriting, R.codeExecMcp],
-              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              // G-03 (GTM-10) — voice-reviewed by Alex, 2026-11-01.
               body:
-                '## The two levers of agent quality\n\nMost agent quality is decided before the model is chosen: what enters the context window, and what tools the agent can call. Context engineering is curation under a budget — what the task needs now, compaction when history outgrows the window, just-in-time retrieval instead of front-loading everything. Tool design is interface writing: fewer, well-described tools with clear inputs and outputs beat a sprawling menu, because the description is the only documentation the model ever reads.\n\n## What you are building\n\nA context-engineering pass on one existing agent, and a redesign of its tool set measured before/after on a fixed set of test cases — the measurement, not the vibe, decides whether the redesign worked.',
+                '## The two levers of agent quality\n\nMost agent quality is decided before the model is chosen: what enters the context window, and what tools the agent can call. Context engineering is curation under a budget — what the task needs now, compaction when history outgrows the window, just-in-time retrieval for everything else. Tool design is interface writing: fewer, well-described tools with clear inputs and outputs beat a sprawling menu, because the description is the only documentation the model ever reads.\n\n## What you are building\n\nA context-engineering pass on one existing agent, and a redesign of its tool set measured before/after on a fixed set of test cases — the measurement, not the vibe, decides whether the redesign worked.',
               subtasks: [
                 { id: 'd5-ct-context', title: 'Context-engineering pass on one existing agent (what enters the window, compaction, just-in-time retrieval)', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD },
                 { id: 'd5-ct-tool-design', title: "Redesign one agent's tool set per tool-design guidance; measure before/after on 10 fixed test cases", kind: 'project', complexity: 3, rubric: RUBRIC_BUILD },
@@ -538,7 +538,7 @@ export const curriculum: Curriculum = {
               id: 'd5-agents',
               title: 'Agents, tool use, MCP, and evaluation',
               resources: [R.agentsBuilding, R.multiAgent, R.mcpIntro, R.hamelEvals],
-              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              // G-03 (GTM-10) — voice-reviewed by Alex, 2026-11-01.
               body:
                 '## Agents are loops, and loops need evals\n\nThe canonical agent pattern is simple: an LLM in a loop with tools, deciding each step until done. Everything hard lives in the discipline around the loop — tool contracts served over MCP so the same server works for any client, and an eval harness (golden examples, an LLM-as-judge, a regression log) so a prompt or tool change cannot silently break what worked yesterday. Build the harness before the agent gets good, not after.\n\n## What you are building\n\nThree portfolio artifacts on a non-pipeline target: an eval harness, one MCP server over a real data source, and a small agentic system (single LLM, a handful of tools, one eval suite) — the same set the capstone collects into a portfolio.',
               subtasks: [
@@ -645,9 +645,9 @@ export const curriculum: Curriculum = {
             {
               id: 'd5-cap',
               title: 'AI/Agent capstone',
-              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              // G-03 (GTM-10) — voice-reviewed by Alex, 2026-11-01.
               body:
-                '## What the capstone assembles\n\nThe portfolio set is the integration test for D5: the eval harness proves the quality discipline, the agentic system proves the architecture, and the MCP server proves the interface. Shipped together they demonstrate the full loop — build, measure, expose — rather than any single skill.\n\n## What you are building\n\nThe three artifacts finished, linked, and consistent with each other: the same conventions across all three, the same eval discipline, and a short read-me that explains how the pieces fit. The set is what a portfolio review reads first.',
+                '## What the capstone assembles\n\nEach portfolio piece proves one thing: the eval harness proves the quality discipline, the agentic system proves the architecture, and the MCP server proves the interface. Shipped together they show the full loop: build, measure, expose.\n\n## What you are building\n\nThe three artifacts finished, linked, and consistent with each other: the same conventions across all three, the same eval discipline, and a short read-me that explains how the pieces fit. The set is what a portfolio review reads first.',
               subtasks: [
                 { id: 'd5-cap-build', title: 'Eval harness + agentic system + MCP server, shipped as a portfolio set', kind: 'capstone', complexity: 5, isCapstone: true, rubric: RUBRIC_BUILD },
               ],
@@ -656,9 +656,9 @@ export const curriculum: Curriculum = {
               id: 'd5-cap-motion',
               title: 'Agent-run motion capstone',
               summary: 'v2: the integrated proof — one revenue motion run end to end by an agent, with every production discipline attached.',
-              // DRAFT (G-03, GTM-10) — pending Alex's voice review.
+              // G-03 (GTM-10) — voice-reviewed by Alex, 2026-11-01.
               body:
-                '## What the capstone assembles\n\nThe agent-run motion is D5 end to end: one revenue motion from first signal to drafted, human-reviewed action, with every production discipline attached — the oversight design, a seeded eval suite gating changes, governed MCP access, production tracing, and an ROI readout against the D2 baseline. It is judged on the disciplines being present and defensible, not on the motion being large.\n\n## What you are building\n\nA runbook plus the evidence: the oversight doc, the eval suite, the access policy, the traces, and one weekly readout — the packet another engineer would need to run the motion without you.',
+                '## What the capstone assembles\n\nThe agent-run motion is D5 end to end: one revenue motion from first signal to drafted, human-reviewed action, with every production discipline attached — the oversight design, a seeded eval suite gating changes, governed MCP access, production tracing, and an ROI readout against the D2 baseline. Keep the motion small; what gets judged is whether every discipline is present and defensible.\n\n## What you are building\n\nA runbook plus the evidence: the oversight doc, the eval suite, the access policy, the traces, and one weekly readout — the packet another engineer would need to run the motion without you.',
               subtasks: [
                 { id: 'd5-cap-motion-build', title: 'One GTM motion run end to end by an agent: first signal → drafted, human-reviewed action, with oversight design, seeded eval suite, governed MCP access, production tracing, and an ROI readout', kind: 'capstone', complexity: 5, isCapstone: true, rubric: RUBRIC_BUILD },
               ],
