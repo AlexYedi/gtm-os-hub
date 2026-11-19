@@ -28,6 +28,9 @@ import { livePursuit } from './live-pursuit'
 // v4.1 (2026-10-12, GTM-28): Commercial loop rounds (AE / AM / CSM) from a
 // commercial-loop research pass; d10-rd-commercial becomes the full mock loop
 // run after the per-round drills. Add-only, new ids only.
+// v5 (2026-11-19): Clay's "10 workflows GTM engineers are building" layered in as
+// field patterns (ref 'Clay field pattern #n'). Seven new subtasks; #5, #7 and #9
+// annotate existing units (d3-act-outbound, d3-act-ads, d10-pf-writeups). Add-only.
 
 const RUBRIC_BUILD = [
   { level: 'novice' as const, descriptor: 'Followed a reference/tutorial; works on the happy path; little error handling.' },
@@ -70,6 +73,8 @@ const R = {
   codeowners: { title: 'GitHub — about code owners', url: 'https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners', kind: 'docs' },
   staffEng: { title: 'Staff Engineer — Will Larson', url: 'https://staffeng.com/book', kind: 'book' },
   huyen: { title: 'AI Engineering — Chip Huyen', url: 'https://huyenchip.com/books/', kind: 'book' },
+  // v5 (2026-11-19): verified 200 on 2026-11-19.
+  clayLivestreams: { title: 'Clay livestreams — builders demo GTM-engineering workflows live', url: 'https://www.clay.com/livestreams', kind: 'course' },
 } satisfies Record<string, Resource>
 
 export const curriculum: Curriculum = {
@@ -263,7 +268,9 @@ export const curriculum: Curriculum = {
               subtasks: [
                 { id: 'd3-orch-webhook-schema', title: 'Webhook + event-schema design (reliable triggers)', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD },
                 { id: 'd3-orch-idempotency', title: 'Idempotency + retry/error-handling pattern', kind: 'exercise', complexity: 3, rubric: RUBRIC_BUILD },
+                { id: 'd3-orch-rescore-triggers', title: 'Keep scores current: re-score an account when a trigger fires (site visit, job change, new signal) instead of on a batch schedule', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD, ref: 'Clay field pattern #2', prompt: 'Pick two triggers you can observe legitimately (a first-party site visit, a champion job change from an official source). Each trigger re-scores only the affected account, idempotently, and writes the old score, new score and reason to a log. Report how stale the scores were under the batch schedule.' },
               ],
+              resources: [R.clayLivestreams],
             },
           ],
         },
@@ -309,11 +316,13 @@ export const curriculum: Curriculum = {
               summary: 'ELEVATION (Rung-2 thickening): the explicit modeling deliverable that separates "data plumber" from "growth architect".',
               body:
                 '## Rung 2 — the differentiator\n\nUnique data points that *predict* purchase, expansion, or churn. This is the thinnest rung in most curricula and the clearest hiring signal. You will define ICP fit attributes, weight them, and produce a fit/propensity score that downstream activation can act on.',
-              resources: [R.molnar, R.shap],
+              resources: [R.molnar, R.shap, R.clayLivestreams],
               subtasks: [
                 { id: 'd3-sde-icp-attrs', title: 'Turn the written target-employer ICP (D10) into weighted fit attributes + a scoring rubric', kind: 'exercise', complexity: 3, rubric: RUBRIC_BUILD },
                 { id: 'd3-sde-score-model', title: 'Fit score over the target-company list, validated against the 10 you would most want', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD, prompt: 'Implement the weighted score in the role scanner (/scan-roles); D10 owns the judgment, this builds the scorer.' },
                 { id: 'd3-sde-explainable', title: 'Explainable score: per-account reason codes (feature contributions) an agent can quote to a seller', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD, prompt: 'Every target carries its top reasons in plain language; check them against 10 companies you already know.' },
+                { id: 'd3-sde-cascade-scorer', title: 'Cascade scorer: rules score every account, an LLM sees only the uncertain band, a human sees only what the LLM cannot settle', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD, ref: 'Clay field pattern #1', prompt: 'Run the deterministic score over the full list; send only accounts inside a confidence band to an LLM with a structured verdict and reason; route the LLM\'s low-confidence verdicts to a review queue. Report LLM calls avoided against score-everything-with-an-LLM, and the agreement rate on a hand-labeled sample of 30.' },
+                { id: 'd3-sde-closed-won-icp', title: 'Derive the ICP from closed-won outcomes, then build a lookalike list and compare it with the hand-written ICP', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD, ref: 'Clay field pattern #3', prompt: 'Profile the won accounts (firmographics, technographics, the signals present before the deal opened); state which attributes separate won from lost; generate a lookalike list from those attributes. Write up where the derived ICP disagrees with the written one and which you would trust.' },
               ],
             },
             {
@@ -335,11 +344,14 @@ export const curriculum: Curriculum = {
             {
               id: 'd3-act-channels',
               title: 'Multi-channel activation',
+              resources: [R.clayLivestreams],
               subtasks: [
-                { id: 'd3-act-outbound', title: 'Automated outbound (signal -> personalize -> send)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD },
+                { id: 'd3-act-outbound', title: 'Automated outbound (signal -> personalize -> send)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD, ref: 'Clay field pattern #5', prompt: 'Reference shape: qualify the lead, verify the email, write per-lead copy, and hold every send for human approval. Measure meetings booked per hour of human review, not emails sent.' },
                 { id: 'd3-act-inbound', title: 'Inbound orchestration (form -> enrich -> route -> score)', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD },
-                { id: 'd3-act-ads', title: 'Ads audiences (CRM-synced custom audiences)', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD },
+                { id: 'd3-act-ads', title: 'Ads audiences (CRM-synced custom audiences)', kind: 'exercise', complexity: 2, rubric: RUBRIC_BUILD, ref: 'Clay field pattern #7', prompt: 'Stretch: per-account creative, where an agent drafts each Tier-1 account\'s ad from its buying signals. Build audiences only from first-party and ad-platform data; no LinkedIn or X scraping.' },
                 { id: 'd3-act-pipeline-agent', title: 'Pipeline-management agent (stale-deal + risk detection → next-best-action draft → rep approval)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD },
+                { id: 'd3-act-warm-crm', title: 'Warm accounts already in the CRM: a live segment of closed-lost, dormant and churned accounts with fresh buying signals, and an agent-proposed campaign per segment', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD, ref: 'Clay field pattern #6', prompt: 'The segment re-evaluates when a signal lands, not weekly. The agent proposes the campaign and the reason; a human launches it. Report pipeline sourced from the existing base against net-new outbound.' },
+                { id: 'd3-act-slack-launch', title: 'Launch signal campaigns from Slack: an agent posts the signal with account context, and the team launches the workflow from the thread', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD, ref: 'Clay field pattern #4', prompt: 'Each post carries the signal, why the account matters, and the proposed play; one action launches it and logs who approved it. Measure signal-to-launch time before and after.' },
               ],
             },
           ],
@@ -392,6 +404,7 @@ export const curriculum: Curriculum = {
               subtasks: [
                 { id: 'd3-sp-contrib-conventions', title: 'Contribution conventions for a shared skills repo (CONTRIBUTING, CODEOWNERS, PR template, required checks)', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD },
                 { id: 'd3-sp-skill-tests', title: 'Eval cases for the two skills that fail most often (on demand, not an every-build mandate)', kind: 'project', complexity: 4, rubric: RUBRIC_BUILD },
+                { id: 'd3-sp-ticket-to-deploy', title: 'Ticket to deployed workflow: an agent turns a RevOps request into a ticket and user story, builds it on a branch, and ships it through review', kind: 'project', complexity: 3, rubric: RUBRIC_BUILD, ref: 'Clay field pattern #8', prompt: 'You already run this loop (Linear issue → branch → PR → human merge). Write it up from three real requests: where the agent\'s ticket was wrong, what review caught, and the cycle time from request to merge.' },
               ],
             },
           ],
@@ -869,7 +882,7 @@ export const curriculum: Curriculum = {
       goal: 'A written ICP, a scored Tier-1 list, a CRM pipeline, buying-committee maps and multi-threaded processes open at Tier-1 accounts, run through to a signed offer.',
       why: 'The offer deadline (2027-01-01) and 4–8 week hiring cycles mean the pipeline must be full by early November. Every commercial drill in the curriculum gets a live counterparty here.',
       exit: 'Tier-1 list scored with reasons, positioning one-pager done, multi-threaded processes open at Tier-1 accounts by week 6; closes on a signed offer.',
-      subtaskIds: ['d10-mm-icp', 'd10-mm-tiering', 'd10-mm-pipeline', 'd3-sde-icp-attrs', 'd3-sde-score-model', 'd3-sde-explainable', 'd6-positioning-onepager', 'd10-sig-watchlist', 'd10-pos-proof-map', 'd10-pos-pitch', 'd10-pf-writeups', 'd10-pf-runbook', 'd10-pf-demo', 'd10-bc-map', 'd10-bc-warm-paths', 'd10-out-field-play', 'd1-exec-email', 'd1-deal-memo', 'd6-battlecard', 'd1-discovery-call', 'd7-msp', 'd10-out-sequence', 'd10-ev-meddpicc', 'd10-ev-dossier', 'd10-ev-mock', 'd10-rd-story-bank', 'd10-rd-behavioral', 'd10-rd-failure-path', 'd10-rd-frustrated-rep', 'd10-rd-case', 'd10-rd-portfolio-defense', 'd10-cr-number', 'd10-cr-deal-walkthrough', 'd10-cr-discovery', 'd10-cr-demo', 'd10-cr-renewal-save', 'd10-cr-qbr', 'd10-cr-book-review', 'd10-cr-work-sample', 'd10-cr-ai-fluency', 'd10-cr-why-commercial', 'd10-rd-commercial', 'd10-rd-reverse', 'd10-th-inbound-funnel', 'd10-th-outbound-reply', 'd10-th-campaign-60', 'd10-out-artifact-gift', 'd10-cl-timing', 'd10-cl-negotiation', 'd10-cl-90day', 'd10-cap-offer', 'd2-funnel-decomp'],
+      subtaskIds: ['d10-mm-icp', 'd10-mm-tiering', 'd10-mm-pipeline', 'd3-sde-icp-attrs', 'd3-sde-score-model', 'd3-sde-explainable', 'd6-positioning-onepager', 'd10-sig-watchlist', 'd10-pos-proof-map', 'd10-pos-pitch', 'd10-pf-writeups', 'd10-pf-runbook', 'd10-pf-demo', 'd10-bc-map', 'd10-bc-warm-paths', 'd10-out-field-play', 'd10-out-event-vip', 'd1-exec-email', 'd1-deal-memo', 'd6-battlecard', 'd1-discovery-call', 'd7-msp', 'd10-out-sequence', 'd10-ev-meddpicc', 'd10-ev-dossier', 'd10-ev-mock', 'd10-rd-story-bank', 'd10-rd-behavioral', 'd10-rd-failure-path', 'd10-rd-frustrated-rep', 'd10-rd-case', 'd10-rd-portfolio-defense', 'd10-cr-number', 'd10-cr-deal-walkthrough', 'd10-cr-discovery', 'd10-cr-demo', 'd10-cr-renewal-save', 'd10-cr-qbr', 'd10-cr-book-review', 'd10-cr-work-sample', 'd10-cr-ai-fluency', 'd10-cr-why-commercial', 'd10-rd-commercial', 'd10-rd-reverse', 'd10-th-inbound-funnel', 'd10-th-outbound-reply', 'd10-th-campaign-60', 'd10-out-artifact-gift', 'd10-cl-timing', 'd10-cl-negotiation', 'd10-cl-90day', 'd10-cap-offer', 'd2-funnel-decomp'],
     },
     {
       id: 'stage-proof-from-shipped-work',
@@ -877,7 +890,7 @@ export const curriculum: Curriculum = {
       goal: 'Interview-grade write-ups of systems that already shipped: design and oversight docs, the judge write-up, a field report, a consulting scope.',
       why: 'The Empire pipeline is real, shipped GTM engineering. Turning it into short, legible proof costs hours, not weeks, and every piece is an interview answer. Runs in parallel with the live pursuit.',
       exit: 'A portfolio folder: design doc, oversight doc, judge write-up, field report and consulting scope, each 2 pages or less, each about something that shipped.',
-      subtaskIds: ['d9-tc-design-doc', 'd5-ov-gates', 'd5-ct-context', 'd5-prompt-craft', 'd5-eo-transcript-analysis', 'd5-eo-judge-validation', 'd3-pe-code-review', 'd3-sde-provenance', 'd5-ce-pipeline', 'd9-exec-brief', 'd9-tc-field-report', 'd6-narrative', 'd9-scqa-rewrite', 'd3-cap-3-consulting-sim', 'd1-wg-shadow-sessions', 'd1-wg-agent-brief', 'd10-th-icp-agent-eval', 'd10-th-signal-precision'],
+      subtaskIds: ['d9-tc-design-doc', 'd5-ov-gates', 'd5-ct-context', 'd5-prompt-craft', 'd5-eo-transcript-analysis', 'd5-eo-judge-validation', 'd3-pe-code-review', 'd3-sde-provenance', 'd5-ce-pipeline', 'd9-exec-brief', 'd9-tc-field-report', 'd6-narrative', 'd9-scqa-rewrite', 'd3-cap-3-consulting-sim', 'd1-wg-shadow-sessions', 'd1-wg-agent-brief', 'd10-th-icp-agent-eval', 'd10-th-signal-precision', 'd3-sp-ticket-to-deploy'],
     },
     {
       id: 'stage-1-engineering-baseline',
@@ -893,7 +906,7 @@ export const curriculum: Curriculum = {
       goal: 'A standalone agent with well-designed tools and MCP access, as a portfolio piece.',
       why: 'Only if open processes lean GTM-engineering. If they are mostly AE/AD by week 4, give these weeks to the live pursuit instead.',
       exit: 'An Agent SDK agent + MCP server running one workflow.',
-      subtaskIds: ['d5-ct-tool-design', 'd5-mcp-server', 'd5-agentic-system', 'd5-sdk-agent'],
+      subtaskIds: ['d5-ct-tool-design', 'd5-mcp-server', 'd5-agentic-system', 'd5-sdk-agent', 'd3-sde-cascade-scorer'],
     },
     {
       id: 'stage-2-ground-in-the-motion',
@@ -909,7 +922,7 @@ export const curriculum: Curriculum = {
       goal: 'A trustworthy, de-duplicated, provenance-stamped data layer agents can read from and write to safely.',
       why: 'Net-new infrastructure; the Empire MI graph already covers the shipped half.',
       exit: 'Capstone 1 — the signal graph live on a governed schema.',
-      subtaskIds: ['d3-sde-spine-scaffold', 'd3-stack-crm-model', 'd3-orch-webhook-schema', 'd3-orch-idempotency', 'd3-sde-identity', 'd3-sde-dedup', 'd4-dbt-model', 'd3-stack-eval', 'd3-cap-1-signal-pipeline'],
+      subtaskIds: ['d3-sde-spine-scaffold', 'd3-stack-crm-model', 'd3-orch-webhook-schema', 'd3-orch-idempotency', 'd3-orch-rescore-triggers', 'd3-sde-identity', 'd3-sde-dedup', 'd4-dbt-model', 'd3-stack-eval', 'd3-cap-1-signal-pipeline'],
     },
     {
       id: 'stage-5-prove-it',
@@ -925,7 +938,7 @@ export const curriculum: Curriculum = {
       goal: 'Cohorts and experiment design on real outcome data.',
       why: 'Needs outcome data the search will not produce in 13 weeks.',
       exit: 'The analytics mini-capstone shipped.',
-      subtaskIds: ['d4-cohort', 'd4-exp-ab-design', 'd4-cap-build'],
+      subtaskIds: ['d4-cohort', 'd3-sde-closed-won-icp', 'd4-exp-ab-design', 'd4-cap-build'],
     },
     {
       id: 'stage-7-run-motions',
@@ -933,7 +946,7 @@ export const curriculum: Curriculum = {
       goal: 'Inbound, outbound, and pipeline management run by agents under governed access, with autonomy earned by evidence and ROI measured.',
       why: 'Everything before this is a prerequisite: data, agents, evals, tracing, and models come together here.',
       exit: 'The agent-run motion capstone and the outbound engine, each with an ROI readout and a causal read.',
-      subtaskIds: ['d3-sde-waterfall', 'd3-act-inbound', 'd3-act-outbound', 'd3-act-pipeline-agent', 'd3-sde-reverse-etl', 'd3-act-ads', 'd5-sdk-mcp-governed', 'd5-ov-autonomy-promotion', 'd5-obs-roi', 'd4-exp-causal', 'd3-cap-2-outbound-engine', 'd5-cap-motion-build'],
+      subtaskIds: ['d3-sde-waterfall', 'd3-act-inbound', 'd3-act-outbound', 'd3-act-pipeline-agent', 'd3-act-warm-crm', 'd3-act-slack-launch', 'd3-sde-reverse-etl', 'd3-act-ads', 'd5-sdk-mcp-governed', 'd5-ov-autonomy-promotion', 'd5-obs-roi', 'd4-exp-causal', 'd3-cap-2-outbound-engine', 'd5-cap-motion-build'],
     },
     {
       id: 'stage-8-commercial-breadth',
