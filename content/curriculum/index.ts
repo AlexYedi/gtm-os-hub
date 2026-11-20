@@ -25,6 +25,10 @@ import { livePursuit } from './live-pursuit'
 // v4 (2026-10-11, GTM-27): interview readiness from the public hiring-side record
 // (hiring guides, interview banks, first-hand loops). D10 gains a proof-first
 // module and an Interview Rounds & Take-Homes section; add-only, new ids only.
+//
+// 2026-11-18 (GTM-3): 1/1/27 is now a pipeline milestone (≥4 active interview
+// processes); the offer target moved to 2027-01-28. Deferred stages re-anchored
+// from "After 1/1/27" to "After the offer".
 // v4.1 (2026-10-12, GTM-28): Commercial loop rounds (AE / AM / CSM) from a
 // commercial-loop research pass; d10-rd-commercial becomes the full mock loop
 // run after the per-round drills. Add-only, new ids only.
@@ -865,7 +869,7 @@ export const curriculum: Curriculum = {
   // ── The path: one sequence across all ten areas ──────────────────────
   // Areas say WHAT a skill is; the path says WHEN to learn it. Every subtask
   // sits in exactly one stage (enforced by lib/curriculum.test.ts). v3: the
-  // search is the forcing function; stages prefixed 'After 1/1/27' are deferred.
+  // search is the forcing function; stages prefixed 'After the offer' are deferred.
   path: [
     {
       id: 'stage-0-rituals',
@@ -880,7 +884,7 @@ export const curriculum: Curriculum = {
       id: 'stage-live-pursuit',
       title: 'Live pursuit — the search as a GTM motion',
       goal: 'A written ICP, a scored Tier-1 list, a CRM pipeline, buying-committee maps and multi-threaded processes open at Tier-1 accounts, run through to a signed offer.',
-      why: 'The offer deadline (2027-01-01) and 4–8 week hiring cycles mean the pipeline must be full by early November. Every commercial drill in the curriculum gets a live counterparty here.',
+      why: 'The offer target (2027-01-28), the milestone of ≥4 active processes by 1/1/27, and 4–8 week hiring cycles mean the pipeline must be full by early November. Every commercial drill in the curriculum gets a live counterparty here.',
       exit: 'Tier-1 list scored with reasons, positioning one-pager done, multi-threaded processes open at Tier-1 accounts by week 6; closes on a signed offer.',
       subtaskIds: ['d10-mm-icp', 'd10-mm-tiering', 'd10-mm-pipeline', 'd3-sde-icp-attrs', 'd3-sde-score-model', 'd3-sde-explainable', 'd6-positioning-onepager', 'd10-sig-watchlist', 'd10-pos-proof-map', 'd10-pos-pitch', 'd10-pf-writeups', 'd10-pf-runbook', 'd10-pf-demo', 'd10-bc-map', 'd10-bc-warm-paths', 'd10-out-field-play', 'd10-out-event-vip', 'd1-exec-email', 'd1-deal-memo', 'd6-battlecard', 'd1-discovery-call', 'd7-msp', 'd10-out-sequence', 'd10-ev-meddpicc', 'd10-ev-dossier', 'd10-ev-mock', 'd10-rd-story-bank', 'd10-rd-behavioral', 'd10-rd-failure-path', 'd10-rd-frustrated-rep', 'd10-rd-case', 'd10-rd-portfolio-defense', 'd10-cr-number', 'd10-cr-deal-walkthrough', 'd10-cr-discovery', 'd10-cr-demo', 'd10-cr-renewal-save', 'd10-cr-qbr', 'd10-cr-book-review', 'd10-cr-work-sample', 'd10-cr-ai-fluency', 'd10-cr-why-commercial', 'd10-rd-commercial', 'd10-rd-reverse', 'd10-th-inbound-funnel', 'd10-th-outbound-reply', 'd10-th-campaign-60', 'd10-out-artifact-gift', 'd10-cl-timing', 'd10-cl-negotiation', 'd10-cl-90day', 'd10-cap-offer', 'd2-funnel-decomp'],
     },
@@ -910,7 +914,7 @@ export const curriculum: Curriculum = {
     },
     {
       id: 'stage-2-ground-in-the-motion',
-      title: 'After 1/1/27 — Ground in the revenue motion',
+      title: 'After the offer (target 1/28/27) —Ground in the revenue motion',
       goal: 'Motion specs and ROI baselines for the motions an agent will run.',
       why: 'Needs a team and a motion to baseline; the search does not supply one.',
       exit: 'Motion specs and an ROI baseline.',
@@ -918,7 +922,7 @@ export const curriculum: Curriculum = {
     },
     {
       id: 'stage-3-data-foundation',
-      title: 'After 1/1/27 — Data foundation (rung 1)',
+      title: 'After the offer (target 1/28/27) —Data foundation (rung 1)',
       goal: 'A trustworthy, de-duplicated, provenance-stamped data layer agents can read from and write to safely.',
       why: 'Net-new infrastructure; the Empire MI graph already covers the shipped half.',
       exit: 'Capstone 1 — the signal graph live on a governed schema.',
@@ -926,7 +930,7 @@ export const curriculum: Curriculum = {
     },
     {
       id: 'stage-5-prove-it',
-      title: 'After 1/1/27 — Prove it: evals + observability',
+      title: 'After the offer (target 1/28/27) —Prove it: evals + observability',
       goal: 'Regression-gated evals and production tracing on an agent.',
       why: 'Needs an agent in production to measure.',
       exit: 'The D5 capstone set with tracing on and CI-gated evals.',
@@ -934,7 +938,7 @@ export const curriculum: Curriculum = {
     },
     {
       id: 'stage-6-model-and-explain',
-      title: 'After 1/1/27 — Model and explain (rung 2)',
+      title: 'After the offer (target 1/28/27) —Model and explain (rung 2)',
       goal: 'Cohorts and experiment design on real outcome data.',
       why: 'Needs outcome data the search will not produce in 13 weeks.',
       exit: 'The analytics mini-capstone shipped.',
@@ -942,7 +946,7 @@ export const curriculum: Curriculum = {
     },
     {
       id: 'stage-7-run-motions',
-      title: 'After 1/1/27 — Run motions end to end (rung 3)',
+      title: 'After the offer (target 1/28/27) —Run motions end to end (rung 3)',
       goal: 'Inbound, outbound, and pipeline management run by agents under governed access, with autonomy earned by evidence and ROI measured.',
       why: 'Everything before this is a prerequisite: data, agents, evals, tracing, and models come together here.',
       exit: 'The agent-run motion capstone and the outbound engine, each with an ROI readout and a causal read.',
@@ -950,7 +954,7 @@ export const curriculum: Curriculum = {
     },
     {
       id: 'stage-8-commercial-breadth',
-      title: 'After 1/1/27 — Commercial breadth',
+      title: 'After the offer (target 1/28/27) —Commercial breadth',
       goal: 'Capacity, rules of engagement, health scoring and the D1/D2/D6/D7 capstones.',
       why: 'The job search now supplies the material: most of the commercial drills run inside Live Pursuit. What remains here is team-scale work.',
       exit: 'The D1, D2, D6, and D7 capstone sets shipped.',
@@ -958,7 +962,7 @@ export const curriculum: Curriculum = {
     },
     {
       id: 'stage-9-platform-and-direction',
-      title: 'After 1/1/27 — Shared platform and technical direction',
+      title: 'After the offer (target 1/28/27) —Shared platform and technical direction',
       goal: 'Set the conventions others build on and practice technical direction at senior level.',
       why: 'Senior-level scope only means something once there are shipped systems to generalize from.',
       exit: 'A contributable shared repo and the writing capstone.',
