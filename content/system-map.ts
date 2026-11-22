@@ -60,7 +60,7 @@ export const NODES: SystemNode[] = [
     id: 'spine',
     label: 'Signal Spine',
     kind: 'source',
-    blurb: 'Separate signal-pipeline Supabase project. Feeds the Signal surface — topic movement and theme intersections — through counts-only signal_read views; the bridge view that knows *who* stays service-role-only, never read here. Wired; lights up when the read path opens.',
+    blurb: 'Separate signal-pipeline Supabase project. Feeds the Signal surface — topic movement and theme intersections — through counts-only signal_read views; the bridge view that knows *who* stays service-role-only, never read here. Aggregate counts come from the four-number v_public_spine_stats view.',
     source: 'Supabase · spine',
     x: 10,
     y: 90,

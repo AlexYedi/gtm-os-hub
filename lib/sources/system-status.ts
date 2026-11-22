@@ -47,6 +47,20 @@ function liveState(metric: string): NodeState {
   return { status: 'live', metric }
 }
 
+function count(n: number | null, unit: string): string | null {
+  return n == null ? null : `${n.toLocaleString('en-US')} ${unit}`
+}
+
+function spineMetric(spine: PublicSpineStats, topic: StatusParts['topic']): NodeState {
+  const parts = [
+    count(spine.signalCount, 'signals'),
+    count(spine.entityCount, 'entities'),
+    count(spine.eventCount, 'events'),
+    topic ? `${topic.themes} themes · ${topic.intersections} pairs` : null,
+  ].filter((x): x is string => x != null)
+  return parts.length > 0 ? liveState(parts.join(' · ')) : INSTRUMENTING_STATE
+}
+
 /**
  * Pure assembler: safe parts → per-node status map. No I/O. Every metric is DERIVED from the
  * parts, never hardcoded (no 396/59/452, no stale "14 tests" literal). This is the tested core.
@@ -70,13 +84,9 @@ export function buildStatusMap(p: StatusParts): StatusMap {
       ? liveState(`${p.university.publicSubmissions} shared · ${p.university.subtasksTotal} units`)
       : INSTRUMENTING_STATE,
 
-    // Topic intelligence is the richest live read from the spine — prefer it. Falls back to raw
-    // signal counts, then instrumenting. All derived, never hardcoded; empty → instrumenting.
-    spine: p.topic
-      ? liveState(`${p.topic.themes} themes · ${p.topic.intersections} pairs`)
-      : p.spine.signalCount != null
-        ? liveState(`${p.spine.signalCount} signals`)
-        : INSTRUMENTING_STATE,
+    // Aggregate counts (v_public_spine_stats) first, then topic intelligence; either alone is
+    // enough to be live. All derived, never hardcoded; both empty → instrumenting.
+    spine: spineMetric(p.spine, p.topic),
 
     // Live by construction (you are looking at it). No fabricated uptime — just where it runs.
     hub: liveState(

@@ -53,14 +53,27 @@ test('live parts derive real metrics, never hardcoded', () => {
   expect(m.spine.metric).toContain('59')
 })
 
-test('topic intelligence takes precedence over raw spine counts on the spine node', () => {
+test('spine node shows the aggregate counts and the topic figures together', () => {
   const m = buildStatusMap({
     ...EMPTY_PARTS,
-    spine: { entityCount: 396, eventCount: 452, signalCount: 59, lastSignalAt: null },
+    spine: { entityCount: 1396, eventCount: 452, signalCount: 59, lastSignalAt: null },
     topic: { themes: 30, intersections: 124 },
   })
   expect(m.spine.status).toBe('live')
+  expect(m.spine.metric).toBe('59 signals · 1,396 entities · 452 events · 30 themes · 124 pairs')
+})
+
+test('spine node is live on topic figures alone when the counts view is empty', () => {
+  const m = buildStatusMap({ ...EMPTY_PARTS, topic: { themes: 30, intersections: 124 } })
   expect(m.spine.metric).toBe('30 themes · 124 pairs')
+})
+
+test('spine node skips a null count rather than printing it', () => {
+  const m = buildStatusMap({
+    ...EMPTY_PARTS,
+    spine: { entityCount: null, eventCount: 452, signalCount: 59, lastSignalAt: null },
+  })
+  expect(m.spine.metric).toBe('59 signals · 452 events')
 })
 
 test('a clean assembled payload passes assertPublicSafe', () => {
